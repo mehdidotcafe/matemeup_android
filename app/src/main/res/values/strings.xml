@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">matemeup</string>
+    <string-array name="genders_array">
+        <item>Homme</item>
+        <item>Femme</item>
+    </string-array>
+</resources>
