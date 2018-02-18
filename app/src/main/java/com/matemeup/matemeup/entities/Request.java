@@ -37,7 +37,6 @@ public class Request {
     {
         Boolean isFirst = true;
 
-        System.out.println("DEF Headers");
         for (Map.Entry<String, String> entry : urlParams.entrySet())
         {
             if (isFirst)
@@ -62,8 +61,6 @@ public class Request {
         com.koushikdutta.ion.builder.Builders.Any.B req = Ion.with(ctx)
                 .load(setDefaultUrlParams(BASE_URL + route));
 
-        System.out.println("Dans send");
-        System.out.println(route);
         if (body != null)
             req.setJsonObjectBody(body);
         //if (header != null)
@@ -76,7 +73,6 @@ public class Request {
             Boolean isSucceed = result != null && result.get("success") != null && result.get("success").getAsBoolean();
 
             if (isSucceed) {
-                System.out.println(result);
                 success(result.get("data").getAsJsonObject());
             }
             else

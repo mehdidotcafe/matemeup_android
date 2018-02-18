@@ -8,9 +8,10 @@ import com.google.gson.JsonObject;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
+import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
+import com.matemeup.matemeup.entities.websocket.WebSocket;
 
 public class MainActivity extends AppCompatActivity {
-
     private void checkJWT()
     {
         JsonObject obj = new JsonObject();

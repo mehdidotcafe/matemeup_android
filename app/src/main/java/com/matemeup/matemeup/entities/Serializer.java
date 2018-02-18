@@ -1,7 +1,5 @@
 package com.matemeup.matemeup.entities;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -25,13 +23,6 @@ public class Serializer
     {
 
         Map<String, Object> map = new HashMap<>();
-
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            map = mapper.readValue(json,
-                    new TypeReference<HashMap<String, Object>>() {
-                    });
-        } catch (java.io.IOException e) {}
 
 
         return map;

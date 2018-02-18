@@ -20,7 +20,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:appcompat-v7:24.2.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
@@ -29,7 +29,6 @@ dependencies {
     // https://mvnrepository.com/artifact/com.koushikdutta.ion/ion
     implementation group: 'com.koushikdutta.ion', name: 'ion', version: '2.1.6'
     implementation 'com.google.android.gms:play-services-places:11.8.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
-
-
+    implementation 'com.github.nkzawa:socket.io-client:0.3.0'
+    implementation 'com.android.support:design:24.2.1'
 }

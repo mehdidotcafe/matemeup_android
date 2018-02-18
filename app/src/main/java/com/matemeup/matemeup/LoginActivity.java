@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void fail(String error)
             {
-                System.out.println("Dans le fail");
+                System.out.println("Dans le fail login");
                 System.out.println(error);
             }
         });
