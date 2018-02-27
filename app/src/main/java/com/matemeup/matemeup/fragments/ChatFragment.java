@@ -19,53 +19,15 @@ import org.json.JSONArray;
 
 import java.util.List;
 
-public class ChatFragment extends ListFragment{
-    public ChatFragment(){}
-
-    private WebSocket ws;
-    private static final String GET_USER_MSG = "global.chat.user.normal.get";
-    private List<UserChat> users;
-
-    private void getUsers(List<UserChat> _users)
-    {
-        users = _users;
-        UserChatAdapter adapter = new UserChatAdapter(getActivity().getApplicationContext(), R.layout.chat_user_list, users);
-        //ListView list = getActivity().findViewById(R.id.list);
-
-        setListAdapter(adapter);
-    }
-
-    public void goToChat(int position)
-    {
-        System.out.println(users.get(position).name);
-        IntentManager.goTo(getActivity().getApplicationContext(), ChatActivity.class);
-    }
-
-    public void initSocket()
-    {
-        ws = new MMUWebSocket(getActivity()) {
-            @Override
-            public void onMessage(final String message, final Object... args)
-            {
-                JSONArray users = (JSONArray)args[0] ;
-                if (message == GET_USER_MSG)
-                {
-                    getUsers(UserChat.fromJson(users));
-                }
-            }
-        };
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        goToChat(position);
+public class ChatFragment extends UserChatListFragment {
+    public ChatFragment() {
+        super();
+        GET_USER_MSG = "global.chat.user.normal.get";
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initSocket();
-        ws.emit(GET_USER_MSG, null);
     }
 
     @Override

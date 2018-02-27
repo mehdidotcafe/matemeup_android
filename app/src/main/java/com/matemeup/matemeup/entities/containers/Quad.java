@@ -1,4 +1,4 @@
-package com.matemeup.matemeup.entities;
+package com.matemeup.matemeup.entities.containers;
 
 public class Quad<A, B, C, D> extends Triple<A, B, C> {
     public D fourth;

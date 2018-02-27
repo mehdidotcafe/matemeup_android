@@ -46,27 +46,37 @@ public class WebSocket {
         }
     };
 
-    public void listener(final String message, final Object... args)
-    {
+    public void on(String message, WebSocketCallback callback) {
+        on(message, callback, false);
     }
 
-    public void emit(String message, Object data)
+    public void on(String message, WebSocketCallback callback, final Boolean isOneTime)
     {
-        final String msg = message;
+        final String _msg = message;
+        final WebSocketCallback _callback = callback;
         socket.on(message, new Emitter.Listener() {
 
             @Override
             public void call(final Object... args) {
+                final Emitter.Listener self = this;
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //System.out.println(args[0]);
-                        //JSONObject data = (JSONObject) args[0];
-                        listener(msg, args);
+                        _callback.onMessage(_msg, args);
+                        if (isOneTime == true)
+                            socket.off(_msg, self);
                     }
                 });
             }
         });
+    }
+
+    public void emit(String message, Object data, WebSocketCallback callback)
+    {
+        final String msg = message;
+
+        if (callback != null)
+            on(message, callback, true);
         socket.emit(message, data);
     }
 

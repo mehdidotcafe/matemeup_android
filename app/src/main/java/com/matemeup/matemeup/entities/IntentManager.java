@@ -4,15 +4,31 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import org.json.JSONObject;
+
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class IntentManager {
-    public static void goTo(Context packageContext, Class<?> cls)
+
+    public static void setExtrasToIntent(Intent activity, JSONObject extras)
+    {
+        System.out.println("data " + Serializer.serialize(extras));
+        activity.putExtra("params", Serializer.serialize(extras));
+    }
+
+    public static void goTo(Context packageContext, Class<?> cls, JSONObject obj)
     {
         Intent activity = new Intent(packageContext, cls);
 
+        if (obj != null)
+            IntentManager.setExtrasToIntent(activity, obj);
         activity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         packageContext.startActivity(activity);
+    }
+
+    public static void goTo(Context packageContext, Class<?> cls)
+    {
+        goTo(packageContext, cls, null);
     }
 
     public static void replace(Context packageContext, Class<?> cls)

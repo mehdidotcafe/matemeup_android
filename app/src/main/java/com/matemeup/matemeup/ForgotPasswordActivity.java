@@ -1,16 +1,17 @@
 package com.matemeup.matemeup;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
-import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.IntentManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -26,13 +27,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         if (Validator.validateEmail(mail))
         {
-            JsonObject toSend = new JsonObject();
+            JSONObject toSend = new JSONObject();
 
-            toSend.addProperty("email", mail);
+            try {
+                toSend.put("email", mail);
+            } catch (JSONException e) { return ;}
             Request req = (new Request()
             {
                 @Override
-                public void success(JsonObject data)
+                public void success(JSONObject data)
                 {
                     goToLogin();
                 }

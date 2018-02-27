@@ -4,32 +4,55 @@ import android.app.Activity;
 
 import com.google.gson.JsonObject;
 import com.matemeup.matemeup.entities.Request;
+import com.matemeup.matemeup.entities.containers.Triple;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MMUWebSocket extends WebSocket {
-    private static final String URL = "http://192.168.0.14:8011/";
+    private static final String URL = "http://192.168.0.39:8011/";
     private static final String EHLO = "ehlo";
     private static Boolean isInit = false;
-    private Boolean hasReceiveEhlo = false;
-    private Map<String, Object> cachedEmit;
+    private static Boolean hasReceiveEhlo = false;
+    private static List<MMUWebSocket> instances = new ArrayList();
+    private List<Triple<String, Object, WebSocketCallback>> cachedEmit;
 
     public MMUWebSocket(Activity activity)
     {
        super(activity, URL);
-       cachedEmit = new HashMap();
+       cachedEmit = new ArrayList();
+       instances.add(this);
        if (isInit == false)
        {
            isInit = true;
            Request req = new Request()
            {
                @Override
-               public void success(JsonObject data)
+               public void success(JSONObject data)
                {
-                   String token = data.get("token").getAsString();
+                   String token;
 
-                   emit(EHLO, token);
+                   try {
+                       token = data.getString("token");
+                   } catch (JSONException e) {
+                       token = "";
+                   }
+
+                   emit(EHLO, token, new WebSocketCallback() {
+                       public void onMessage(String message, final Object... args) {
+                           if (hasReceiveEhlo == false)
+                           {
+                               if ((Boolean)args[0] == true)
+                               {
+                                   hasReceiveEhlo = true;
+                                   emitToAllCached();
+                               }
+                           }
+                       }
+                   });
                }
            };
 
@@ -37,43 +60,35 @@ public class MMUWebSocket extends WebSocket {
        }
     }
 
+    private void emitToAllCached() {
+        for (int i = 0; i < instances.size(); i++)
+        {
+            instances.get(i).emitCached();
+        }
+    }
+
     private void emitCached()
     {
-        for (Map.Entry<String, Object> entry : cachedEmit.entrySet())
+        System.out.println("emitCached header " + this);
+        for (int i = 0; i < cachedEmit.size(); i++)
         {
-            emit(entry.getKey(), entry.getValue());
+            emit(cachedEmit.get(i).first, cachedEmit.get(i).second, cachedEmit.get(i).third);
         }
-    }
-
-    public void onMessage(final String message, final Object... args)
-    {
-
+        cachedEmit.clear();
     }
 
     @Override
-    public void listener(final String message, final Object... args)
+    public void emit(String message, Object data, WebSocketCallback callback)
     {
-        if (hasReceiveEhlo == false)
-        {
-            if (message == EHLO && (Boolean)args[0] == true)
-            {
-                hasReceiveEhlo = true;
-                emitCached();
-            }
-        }
-        else
-            onMessage(message, args);
-    }
-
-    @Override
-    public void emit(String message, Object data)
-    {
-        System.out.println("emitting " + message);
         if (hasReceiveEhlo == false && !message.equals(EHLO))
         {
-            cachedEmit.put(message, data);
+            System.out.println("Caching " + message);
+            cachedEmit.add(new Triple(message, data, callback));
         }
         else
-            super.emit(message, data);
+        {
+            System.out.println("emitting " + message);
+            super.emit(message, data, callback);
+        }
     }
 }

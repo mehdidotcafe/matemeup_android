@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">matemeup</string>
+    <string name="app_name">MateMeUp</string>
     <string-array name="genders_array">
         <item>Homme</item>
         <item>Femme</item>

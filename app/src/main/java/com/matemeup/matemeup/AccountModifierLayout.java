@@ -1,0 +1,121 @@
+package com.matemeup.matemeup;
+
+import android.app.DialogFragment;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.matemeup.matemeup.entities.Date;
+import com.matemeup.matemeup.entities.Serializer;
+import com.matemeup.matemeup.entities.containers.Quad;
+import com.matemeup.matemeup.fragments.DatePickerFragment;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+
+public class AccountModifierLayout extends Layout implements DatePickerFragment.OnDatePicked
+{
+    interface ValueGetter {
+        Object get(View view);
+    }
+
+    interface ValueValidation {
+        Boolean validate(Object value, HashMap<String, Object> map);
+    }
+
+    protected Date birthdate = null;
+    protected String placeAddress = "";
+
+    protected JSONObject validateFields(List<Quad<Integer, ValueGetter, ValueValidation, String>> fieldsId) {
+        HashMap<String, Object> fieldsValue = new HashMap();
+        Object value;
+        Boolean hasError = false;
+
+        for (int i = 0; i < fieldsId.size(); i++) {
+            value = fieldsId.get(i).second.get(fieldsId.get(i).first != null ? findViewById(fieldsId.get(i).first) : null);
+            if (!fieldsId.get(i).third.validate(value, fieldsValue)) {
+                hasError = true;
+                break;
+
+            }
+            if (!fieldsId.get(i).fourth.equals(""))
+                fieldsValue.put(fieldsId.get(i).fourth, value);
+        }
+        if (hasError)
+            return null;
+        return Serializer.fromMap(fieldsValue);
+    }
+
+    public static Object getFromString(View view) {
+        return ((EditText) view).getText().toString();
+    }
+
+    public static Object getFromBoolean(View view) {
+        return ((Switch) view).isChecked();
+    }
+
+
+    @Override
+    public void onDatePicked(int year, int month, int day) {
+        birthdate = new Date(year, month, day);
+        ((TextView)findViewById(R.id.birthdate_input)).setText(day + "/" + month + "/" + year);
+    }
+
+    public void showBirthdatePicker(View view) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
+    }
+
+    protected void configurePlaceAutocomplete()
+    {
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build();
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);;
+        autocompleteFragment.setFilter(typeFilter);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                placeAddress = place.getAddress().toString();
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                placeAddress = "";
+            }
+        });
+    }
+
+    protected void configureGenderSpinner() {
+        Spinner spinner = (Spinner) findViewById(R.id.gender_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+            R.array.genders_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+    }
+
+    public void onCreate(Bundle savedInstanceState, int resourceId) {
+        super.onCreate(savedInstanceState, resourceId);
+        configurePlaceAutocomplete();
+        configureGenderSpinner();
+    }
+}

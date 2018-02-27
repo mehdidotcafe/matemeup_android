@@ -1,4 +1,4 @@
-package com.matemeup.matemeup.entities;
+package com.matemeup.matemeup.entities.containers;
 
 public class Pair<A, B> {
     public A first;

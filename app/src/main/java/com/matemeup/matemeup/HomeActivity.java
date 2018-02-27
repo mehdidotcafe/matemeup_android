@@ -1,11 +1,17 @@
 package com.matemeup.matemeup;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
+import com.matemeup.matemeup.adapters.UserAutocompleteAdapter;
+import com.matemeup.matemeup.entities.model.UserChat;
 import com.matemeup.matemeup.fragments.ChatFragment;
 import com.matemeup.matemeup.fragments.InvitationFragment;
 
@@ -13,6 +19,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends Layout {
+
+    public void setNewChatListener(){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Ca clique");
+            }
+        });
+    }
+
+    private void setUserAutoCompletion() {
+        List<UserChat> USERS = new ArrayList<UserChat>();
+
+        USERS.add(new UserChat(42, "toto", "noavatar.png"));
+        USERS.add(new UserChat(43, "totototo", "noavatar.png"));
+        USERS.add(new UserChat(44, "meddou", "noavatar.png"));
+        USERS.add(new UserChat(45, "Naru", "noavatar.png"));
+
+        UserAutocompleteAdapter adapter = new UserAutocompleteAdapter(this,
+                R.layout.username_autocomplete_dropdown_item, USERS);
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.username_autocomplete);
+        textView.setAdapter(adapter);
+    }
 
 
     @Override
@@ -29,6 +60,9 @@ public class HomeActivity extends Layout {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        setUserAutoCompletion();
+        setNewChatListener();
+
     }
 
     // Adapter for the viewpager using FragmentPagerAdapter

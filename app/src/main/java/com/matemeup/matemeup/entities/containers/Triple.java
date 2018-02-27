@@ -1,4 +1,6 @@
-package com.matemeup.matemeup.entities;
+package com.matemeup.matemeup.entities.containers;
+
+import com.matemeup.matemeup.entities.containers.Pair;
 
 public class Triple<A, B, C> extends Pair<A, B> {
     public C third;

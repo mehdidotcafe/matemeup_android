@@ -1,7 +1,6 @@
 package com.matemeup.matemeup;
 
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,57 +16,32 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.gson.JsonObject;
 import com.matemeup.matemeup.entities.Date;
 import com.matemeup.matemeup.entities.JWT;
-import com.matemeup.matemeup.entities.Quad;
+import com.matemeup.matemeup.entities.containers.Quad;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.fragments.DatePickerFragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RegisterActivity extends AppCompatActivity implements DatePickerFragment.OnDatePicked {
-
-    private Date birthdate = null;
-    private String placeAddress = "";
-
-    interface ValueGetter {
-        Object get(View view);
-    }
-
-    interface ValueValidation {
-        Boolean validate(Object value, HashMap<String, Object> map);
-    }
+public class RegisterActivity extends AccountModifierLayout {
 
     public void goToHome()
     {
         IntentManager.replace(this, HomeActivity.class);
     }
 
-    @Override
-    public void onDatePicked(int year, int month, int day) {
-        birthdate = new Date(year, month, day);
-        ((TextView)findViewById(R.id.birthdate_input)).setText(day + "/" + month + "/" + year);
-    }
-
-    public void showBirthdatePicker(View view) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "datePicker");
-    }
-
-    public static Object getFromString(View view) {
-        return ((EditText) view).getText().toString();
-    }
-
-    public static Object getFromBoolean(View view) {
-        return ((Switch) view).isChecked();
-    }
 
     @SuppressWarnings("unchecked")
     public void submitRegister(View view) {
         List<Quad<Integer, ValueGetter, ValueValidation, String>> fieldsId = new ArrayList();
+        JSONObject obj;
 
         fieldsId.add(new Quad(R.id.name_input, new ValueGetter() {
             public Object get(View _view) {
@@ -234,31 +208,21 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerFra
             }
         }, "bdday"));
 
-        HashMap<String, Object> fieldsValue = new HashMap();
-        Object value = "";
-        Boolean hasError = false;
-
-        for (int i = 0; i < fieldsId.size(); i++) {
-            value = fieldsId.get(i).second.get(fieldsId.get(i).first != null ? findViewById(fieldsId.get(i).first) : null);
-            if (!fieldsId.get(i).third.validate(value, fieldsValue)) {
-                hasError = true;
-                break;
-
-            }
-            if (!fieldsId.get(i).fourth.equals(""))
-                fieldsValue.put(fieldsId.get(i).fourth, value);
-        }
-
-        if (hasError) {
+        if ((obj = validateFields(fieldsId)) == null) {
         }
         else {
-            JsonObject obj = Serializer.fromMap(fieldsValue);
             Request req = (new Request()
             {
                 @Override
-                public void success(JsonObject data)
+                public void success(JSONObject data)
                 {
-                    String token = data.get("token").getAsString();
+                    String token;
+
+                    try {
+                        token = data.getString("token");
+                    } catch (JSONException e) {
+                        token = "";
+                    }
 
                     JWT.put(RegisterActivity.this, token);
                     Request.addQueryString("token", token);
@@ -277,36 +241,9 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerFra
         }
     }
 
-    private void configurePlaceAutocomplete()
-    {
-        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
-                .build();
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);;
-        autocompleteFragment.setFilter(typeFilter);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                placeAddress = place.getAddress().toString();
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                placeAddress = "";
-            }
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-
-        configurePlaceAutocomplete();
+        super.onCreate(savedInstanceState, R.layout.activity_register);
 
     }
 }

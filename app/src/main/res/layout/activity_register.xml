@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/name-input"
+                android:id="@+id/name_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -41,7 +41,7 @@
 
 
             <EditText
-                android:id="@+id/email-input"
+                android:id="@+id/email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/register-password-input"
+                android:id="@+id/register_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -72,10 +72,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/email-input" />
+                app:layout_constraintTop_toBottomOf="@+id/email_input" />
 
             <EditText
-                android:id="@+id/conf-password-input"
+                android:id="@+id/conf_password_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -89,10 +89,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/password-input" />
+                app:layout_constraintTop_toBottomOf="@+id/password_input" />
 
             <EditText
-                android:id="@+id/sponsor-input"
+                android:id="@+id/sponsor_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -104,10 +104,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/location-input" />
+                app:layout_constraintTop_toBottomOf="@+id/location_input" />
 
             <EditText
-                android:id="@+id/firstname-input"
+                android:id="@+id/firstname_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -116,19 +116,19 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
                 android:hint="Prénom"
-                app:layout_constraintEnd_toStartOf="@+id/firstname-input"
+                app:layout_constraintEnd_toStartOf="@+id/firstname_input"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sponsor-input" />
+                app:layout_constraintTop_toBottomOf="@+id/sponsor_input" />
 
             <TextView
-                android:id="@+id/birthdate-input"
+                android:id="@+id/birthdate_input"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="showBirthdatePicker"
                 android:text="Date de naissance" />
 
             <EditText
-                android:id="@+id/lastname-input"
+                android:id="@+id/lastname_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -138,37 +138,37 @@
                 android:layout_marginTop="32dp"
                 android:hint="Nom"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/firstname-input"
-                app:layout_constraintTop_toBottomOf="@+id/sponsor-input" />
+                app:layout_constraintStart_toEndOf="@+id/firstname_input"
+                app:layout_constraintTop_toBottomOf="@+id/sponsor_input" />
 
 
             <Switch
-                android:id="@+id/gender-input"
+                android:id="@+id/gender_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Etes vous un homme" />
 
             <Switch
-                android:id="@+id/identity-visibility-input"
+                android:id="@+id/identity_visibility_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Montrer mon nom publiquement" />
 
 
             <Switch
-                android:id="@+id/chat-visibility-input"
+                android:id="@+id/chat_visibility_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Permettre à tous de me contacter en message privés" />
 
             <Switch
-                android:id="@+id/accept-email-input"
+                android:id="@+id/accept_email_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="J'accepte de recevoir des e-mails de MateMeUp" />
 
             <Switch
-                android:id="@+id/accept-CGU-input"
+                android:id="@+id/accept_CGU_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="J'accepte les CGU" />
@@ -181,7 +181,7 @@
                 />
 
             <Button
-                android:id="@+id/submit-register-button"
+                android:id="@+id/submit_register_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="submitRegister"

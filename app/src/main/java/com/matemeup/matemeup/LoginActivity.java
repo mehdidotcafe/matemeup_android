@@ -10,6 +10,9 @@ import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -33,16 +36,25 @@ public class LoginActivity extends AppCompatActivity {
     {
         String username = ((TextView)findViewById(R.id.username_input)).getText().toString();
         String password = ((TextView)findViewById(R.id.login_password_input)).getText().toString();
-        JsonObject loginObj = new JsonObject();
+        JSONObject loginObj = new JSONObject();
 
-        loginObj.addProperty("email", username);
-        loginObj.addProperty("password", password);
+        try {
+            loginObj.put("email", username);
+            loginObj.put("password", password);
+        } catch (JSONException e) {return ;}
+
         Request req = (new Request()
         {
             @Override
-            public void success(JsonObject data)
+            public void success(JSONObject data)
             {
-                String token = data.get("token").getAsString();
+                String token;
+
+                try {
+                    token = data.getString("token");
+                } catch (JSONException e) {
+                    token = "";
+                }
 
                 JWT.put(LoginActivity.this, token);
                 Request.addQueryString("token", token);
