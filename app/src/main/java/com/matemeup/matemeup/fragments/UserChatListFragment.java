@@ -24,12 +24,26 @@ public class UserChatListFragment extends ListFragment {
     private List<UserChat> users;
     private UserChatAdapter adapter = null;
 
-    private void getUsers(List<UserChat> _users)
-    {
-        users = _users;
+    private void initAdapter() {
         adapter = new UserChatAdapter(getActivity().getApplicationContext(), R.layout.chat_user_list, users);
 
         setListAdapter(adapter);
+    }
+
+    public void setUsers(List<UserChat> newUsers) {
+        users = newUsers;
+
+        if (adapter == null)
+            initAdapter();
+        else
+            adapter.setList(users);
+    }
+
+    private void getUsers(List<UserChat> _users)
+    {
+        users = _users;
+        if (adapter == null)
+            initAdapter();
     }
 
     public void goToChat(int position)

@@ -19,11 +19,13 @@ import java.util.List;
 public abstract class RemoteArrayAdapter<T> extends ArrayAdapter<T> {
     protected List<T> list;
     protected Context ctx;
+    protected String route;
 
-    public RemoteArrayAdapter(Context c, int textViewResourceId, List<T> l) {
+    public RemoteArrayAdapter(String route, Context c, int textViewResourceId, List<T> l) {
         super(c, textViewResourceId, l);
         ctx = c;
         list = l;
+        this.route = route;
     }
 
     abstract public void setListFromResponse(JSONArray array);
@@ -59,7 +61,7 @@ public abstract class RemoteArrayAdapter<T> extends ArrayAdapter<T> {
                     obj.put("needle", constraint);
                 } catch (JSONException e){}
                 if (constraint != null) {
-                    req.send(ctx, "users/chat/get", "GET", null, obj);
+                    req.send(ctx, route, "GET", null, obj);
                 }
                 return null;
             }
@@ -76,6 +78,8 @@ public abstract class RemoteArrayAdapter<T> extends ArrayAdapter<T> {
                 }
 
             }
+
+
         };
 
      return myFilter;

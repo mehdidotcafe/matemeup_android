@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
@@ -14,7 +16,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include4"
         app:tabGravity="fill"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorAccent"
@@ -31,33 +34,38 @@
     <include
         android:id="@+id/include"
         layout="@layout/footer"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tabs"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/include"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include layout="@layout/footer_shadow" />
+    </LinearLayout>
+
+
+    <include
+        android:id="@+id/include4"
+        layout="@layout/toolbar_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/new_chat_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/include"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <AutoCompleteTextView
-        android:id="@+id/username_autocomplete"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:hint="User"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/pager" />
+        android:src="@drawable/ic_create_black_24dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@+id/include"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

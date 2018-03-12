@@ -16,7 +16,6 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private void checkJWT()
     {
-        JsonObject obj = new JsonObject();
         String jwt = JWT.get(this);
 
         System.out.println(jwt);
@@ -29,16 +28,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(JSONObject data)
             {
-                System.out.println("Dans le login success");
-                System.out.println(data);
                 goToHome();
             }
 
             @Override
             public void fail(String error)
             {
-                System.out.println("Dans le login fail");
-                System.out.println(error);
+                findViewById(R.id.loader_screen).setVisibility(View.GONE);
+                findViewById(R.id.login_screen).setVisibility(View.VISIBLE);
             }
         });
 

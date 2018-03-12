@@ -4,16 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".ProfileActivity"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/toolbar_back" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="109dp"
+            android:background="@drawable/backtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteY="77dp">
+
+            <ImageView
+                android:id="@+id/avatar_container"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/round_outline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/username_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@+id/avatar_container"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
-        android:layout_height="455dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/include2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,77 +73,253 @@
             android:layout_marginRight="16dp"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".50"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prénom" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginStart="16dp"
+                            android:src="@drawable/ic_person_black_24dp" />
+
+                        <EditText
+                            android:id="@+id/firstname_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Prénom"
+                            android:inputType="textPersonName" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".50"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nom" />
+
+                    <EditText
+                        android:id="@+id/lastname_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Nom"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Prénom"
-                tools:layout_editor_absoluteX="50dp"
-                tools:layout_editor_absoluteY="63dp" />
+                android:layout_marginTop="24dp"
+                android:text="Mot de passe" />
 
-            <EditText
-                android:id="@+id/firstname_input"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Prénom"
-                android:inputType="textPersonName"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="28dp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_lock_black_24dp" />
+
+                <EditText
+                    android:id="@+id/password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Nom"
-                tools:layout_editor_absoluteX="50dp"
-                tools:layout_editor_absoluteY="63dp" />
+                android:layout_marginTop="24dp"
+                android:text="Confirmation du mot de passe" />
 
-            <EditText
-                android:id="@+id/lastname_input"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Nom"
-                android:inputType="textPersonName"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="28dp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_lock_black_24dp" />
+
+                <EditText
+                    android:id="@+id/conf_password_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/birthdate_input"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="showBirthdatePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="Date de naissance" />
 
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_event_black_24dp" />
+
+                <TextView
+                    android:id="@+id/birthdate_input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:onClick="showBirthdatePicker"
+                    android:textColor="#000000"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Location" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/gender_spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_search_black_24dp" />
 
-            <Switch
-                android:id="@+id/chat_visibility_input"
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Sexe" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Permettre à tous de me contacter en message privés" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_person_black_24dp" />
+
+                <Spinner
+                    android:id="@+id/gender_spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Visibilité" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="196dp"
+                    android:layout_height="wrap_content"
+                    android:text="Permettre à tous de me contacter en message privés" />
+
+                <Switch
+                    android:id="@+id/chat_visibility_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:width="128dp"
+                    android:gravity="center"
+                    android:theme="@style/SwitchTheme" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/submitmodification-button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:onClick="submitModif"
-                android:text="Sauvegarder" />
+                android:text="Mettre a jour" />
 
 
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/include2"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include layout="@layout/footer_shadow" />
+    </LinearLayout>
 
     <include
         android:id="@+id/include2"
@@ -101,5 +328,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2"
         app:layout_constraintVertical_bias="0.619" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <include layout="@layout/toolbar_shadow" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

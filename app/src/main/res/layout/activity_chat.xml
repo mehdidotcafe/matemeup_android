@@ -6,47 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".ChatActivity">
 
-    <ListView
+    <include
+        android:id="@+id/include7"
+        layout="@layout/toolbar_user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/message_list"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <include layout="@layout/footer_shadow" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:layout_marginStart="8dp"
+            android:id="@+id/chat_input"
+            android:layout_width="288dp"
+            android:layout_height="match_parent"
+            android:hint="Exprimez-vous" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/send_image_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="sendImageFromButton"
+                android:src="@drawable/ic_image_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/send_text_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="sendTextFromButton"
+                android:src="@drawable/ic_send_black_24dp"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/message_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/include7" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/message_list">
 
-        <EditText
-            android:id="@+id/chat_input"
-            android:layout_width="280dp"
-            android:layout_height="match_parent" />
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/send_image_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:onClick="sendImageFromButton"
-                android:text="Image" />
-
-            <Button
-                android:id="@+id/send_text_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:onClick="sendTextFromButton"
-                android:text="Envoyer"
-                android:visibility="invisible" />
-        </RelativeLayout>
-
+        <include layout="@layout/toolbar_shadow" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

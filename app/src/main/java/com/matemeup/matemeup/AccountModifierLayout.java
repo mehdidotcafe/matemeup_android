@@ -14,17 +14,18 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.matemeup.matemeup.entities.Date;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.containers.Quad;
 import com.matemeup.matemeup.fragments.DatePickerFragment;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class AccountModifierLayout extends Layout implements DatePickerFragment.OnDatePicked
+public class AccountModifierLayout extends BackToolbarActivity implements DatePickerFragment.OnDatePicked
 {
     interface ValueGetter {
         Object get(View view);
@@ -34,8 +35,9 @@ public class AccountModifierLayout extends Layout implements DatePickerFragment.
         Boolean validate(Object value, HashMap<String, Object> map);
     }
 
-    protected Date birthdate = null;
+    protected java.util.Date birthdate = null;
     protected String placeAddress = "";
+    protected PlaceAutocompleteFragment autocompleteFragment;
 
     protected JSONObject validateFields(List<Quad<Integer, ValueGetter, ValueValidation, String>> fieldsId) {
         HashMap<String, Object> fieldsValue = new HashMap();
@@ -45,6 +47,7 @@ public class AccountModifierLayout extends Layout implements DatePickerFragment.
         for (int i = 0; i < fieldsId.size(); i++) {
             value = fieldsId.get(i).second.get(fieldsId.get(i).first != null ? findViewById(fieldsId.get(i).first) : null);
             if (!fieldsId.get(i).third.validate(value, fieldsValue)) {
+                System.out.println("error validation " + fieldsId.get(i).fourth);
                 hasError = true;
                 break;
 
@@ -62,14 +65,21 @@ public class AccountModifierLayout extends Layout implements DatePickerFragment.
     }
 
     public static Object getFromBoolean(View view) {
-        return ((Switch) view).isChecked();
+        return !((Switch) view).isChecked() ? 0 : 1;
+    }
+
+    public static Object getFromGender(View view) {
+        return ((Spinner)view).getSelectedItemPosition();
     }
 
 
     @Override
     public void onDatePicked(int year, int month, int day) {
-        birthdate = new Date(year, month, day);
-        ((TextView)findViewById(R.id.birthdate_input)).setText(day + "/" + month + "/" + year);
+
+        birthdate = new GregorianCalendar(year, month, day).getTime();
+
+        DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
+        ((TextView) findViewById(R.id.birthdate_input)).setText(df.format(birthdate));
     }
 
     public void showBirthdatePicker(View view) {
@@ -82,7 +92,7 @@ public class AccountModifierLayout extends Layout implements DatePickerFragment.
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
                 .build();
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);;
         autocompleteFragment.setFilter(typeFilter);
 

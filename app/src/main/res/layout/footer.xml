@@ -2,9 +2,8 @@
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:orientation="horizontal"
-    android:background="@color/colorPrimaryDark"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -12,60 +11,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".33"
-        android:gravity="center"
-        android:onClick="replaceChat"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".33"
+            android:gravity="center"
+            android:orientation="vertical">
 
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageButton
+                android:onClick="replaceChat"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_chat_black_24dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chat" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight=".33"
         android:gravity="center"
-        android:onClick="replaceProfile"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:onClick="replaceProfile"
+            android:background="?attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_person_black_24dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profil" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight=".33"
         android:gravity="center"
-        android:onClick="replaceFriends"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:background="?attr/selectableItemBackground"
+            android:onClick="replaceFriends"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_people_black_24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Amis" />
     </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

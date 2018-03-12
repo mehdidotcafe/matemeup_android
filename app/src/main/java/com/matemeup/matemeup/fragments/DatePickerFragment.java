@@ -7,6 +7,8 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
+import com.matemeup.matemeup.R;
+
 import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment
@@ -41,7 +43,7 @@ public class DatePickerFragment extends DialogFragment
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(getActivity(), R.style.datepicker, this, year, month, day);
     }
 
     public void onDateSet(DatePicker view, int y, int mo, int d) {

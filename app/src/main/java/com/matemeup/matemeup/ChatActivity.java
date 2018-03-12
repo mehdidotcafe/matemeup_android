@@ -4,18 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.matemeup.matemeup.adapters.HistoryChatAdapter;
 import com.matemeup.matemeup.entities.Serializer;
@@ -32,9 +28,10 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class ChatActivity extends Layout {
+import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
+
+public class ChatActivity extends UserToolbarActivity {
     private UserChat user;
     private WebSocket ws;
     private String getURL = "global.chat.user.normal.history";
@@ -42,6 +39,9 @@ public class ChatActivity extends Layout {
     private static final int CHUNK_SIZE = 30;
     private static int index = 0;
     private HistoryChatAdapter adapter = null;
+    private ArrayList<HistoryChat> list = new ArrayList();
+    private int SCROLL_CEIL = 30;
+    private Boolean isRequesting = false;
 
     private void sendText(String text) {
         JSONObject obj = new JSONObject();
@@ -102,18 +102,8 @@ public class ChatActivity extends Layout {
         input.setText("");
     }
 
-    private void bindWithAdapter(List<HistoryChat> list) {
-        adapter = new HistoryChatAdapter(this, R.layout.chat_history_list, list);
-        ListView listView = (ListView)findViewById(R.id.message_list);
-
-        listView.setAdapter(adapter);
-        listView.setSelection(adapter.getCount() - 1);
-
-    }
-
-    private void renderMessages(JSONObject data) throws JSONException {
+    private void renderMessages(JSONObject data, Boolean goToBottom) throws JSONException {
         JSONArray messages;
-        ArrayList<HistoryChat> list = new ArrayList();
 
         try {
             messages = new JSONArray(data.getString("history"));
@@ -121,16 +111,22 @@ public class ChatActivity extends Layout {
             messages = new JSONArray();
         }
 
-        for (int i = 0; i < messages.length(); i++)
+        index += messages.length();
+        for (int i = 0; i <= messages.length() - 1; i++)
         {
-            System.out.println(messages.getJSONObject(i));
-            list.add(new HistoryChat(messages.getJSONObject(i)));
+            list.add(0, new HistoryChat(messages.getJSONObject(i)));
         }
+        adapter.notifyItemRangeInserted(0, messages.length());
 
-        bindWithAdapter(list);
+        if (goToBottom == true)
+        {
+            if (list.size() > 0)
+                ((RecyclerView)findViewById(R.id.message_list)).smoothScrollToPosition(list.size() - 1);
+        }
+        isRequesting = false;
     }
 
-    private void getChunk() {
+    private void getChunk(final Boolean goToBottom) {
         JSONObject obj = new JSONObject();
 
         try {
@@ -145,18 +141,18 @@ public class ChatActivity extends Layout {
             {
                 JSONObject messages = (JSONObject)args[0];
                 try {
-                    renderMessages(messages);
+                    renderMessages(messages, goToBottom);
                 } catch (JSONException e) {}
             }
         });
     }
 
     private void onNewMessage(HistoryChat message) {
-        ListView listView = (ListView)findViewById(R.id.message_list);
-        adapter.add(message);
-        adapter.notifyDataSetChanged();
-        listView.setSelection(adapter.getCount() - 1);
+        RecyclerView rv = (RecyclerView)findViewById(R.id.message_list);
 
+        list.add(message);
+        adapter.notifyItemInserted(list.size() - 1);
+        rv.smoothScrollToPosition(list.size() - 1);
     }
 
     private void initSocket() {
@@ -171,8 +167,8 @@ public class ChatActivity extends Layout {
     }
 
     private void setSendTextVisibility(Boolean isVisible) {
-        Button imageButton = (Button)this.findViewById(R.id.send_image_button);
-        Button textButton = (Button)this.findViewById(R.id.send_text_button);
+        View imageButton = findViewById(R.id.send_image_button);
+        View textButton = findViewById(R.id.send_text_button);
 
         if (isVisible == true)
         {
@@ -188,8 +184,7 @@ public class ChatActivity extends Layout {
 
     private void getUser() {
         user = new UserChat(Serializer.unserialize(getIntent().getStringExtra("params")));
-
-        System.out.println(user);
+        setUser(user);
     }
 
     private void setMessageInputListener() {
@@ -215,13 +210,45 @@ public class ChatActivity extends Layout {
         });
     }
 
+    private void initList(){
+        final RecyclerView fl = (RecyclerView)findViewById(R.id.message_list);
+
+        adapter = new HistoryChatAdapter(this, R.layout.item_chat_history, list, user.id);
+        fl.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        fl.setAdapter(adapter);
+
+        fl.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == SCROLL_STATE_TOUCH_SCROLL)
+                {
+                    int offset = fl.computeVerticalScrollOffset();
+                    int extent = fl.computeVerticalScrollExtent();
+                    int range = fl.computeVerticalScrollRange();
+
+                    int percentage = (int)(100.0 * offset / (float)(range - extent));
+
+                    if (percentage <= SCROLL_CEIL && isRequesting == false) {
+                        getChunk(false);
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        super.onCreate(savedInstanceState, R.layout.activity_chat);
+        index = 0;
+        list = new ArrayList();
+        isRequesting = false;
         setMessageInputListener();
         getUser();
+        initList();
         initSocket();
-        getChunk();
+        getChunk(true);
+        System.out.println("HELLO GUYS");
     }
 }

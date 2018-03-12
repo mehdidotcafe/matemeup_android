@@ -16,6 +16,7 @@ import com.matemeup.matemeup.entities.rendering.RemoteImageLoader;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserAutocompleteAdapter extends RemoteArrayAdapter<UserChat> {
@@ -30,8 +31,8 @@ public class UserAutocompleteAdapter extends RemoteArrayAdapter<UserChat> {
         } catch (JSONException e) {}
     }
 
-    public UserAutocompleteAdapter(Context ctx, int textViewResourceId, List<UserChat> u){
-        super(ctx, textViewResourceId, u);
+    public UserAutocompleteAdapter(Context ctx, int textViewResourceId){
+        super("users/chat/get", ctx, textViewResourceId, new ArrayList<UserChat>());
     }
 
     @Override
@@ -43,7 +44,7 @@ public class UserAutocompleteAdapter extends RemoteArrayAdapter<UserChat> {
             view = inflater.inflate(R.layout.username_autocomplete_dropdown_item, null, false);
         UserChat user = super.getItem(position);
         ((TextView)view.findViewById(R.id.username_autocomplete_container)).setText(user.name);
-        ImageView img = (ImageView)view.findViewById(R.id.avatar_autocomplete_container);
+        ImageView img = view.findViewById(R.id.avatar_autocomplete_container);
         RemoteImageLoader.load(img, user.avatar);
         return view;
     }

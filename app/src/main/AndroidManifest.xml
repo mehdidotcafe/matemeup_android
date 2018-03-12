@@ -3,7 +3,7 @@
     package="com.matemeup.matemeup">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +16,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCKpJh07iUDX-Dy24jxihtGDoE4am7JKmo" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,23 +27,32 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ForgotPasswordActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ProfileActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".FriendsActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".ChatActivity" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ChatActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".UserSelectActivity"></activity>
     </application>
 
 </manifest>

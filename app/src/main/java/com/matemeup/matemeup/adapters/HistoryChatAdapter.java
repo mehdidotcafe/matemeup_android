@@ -1,11 +1,16 @@
 package com.matemeup.matemeup.adapters;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.matemeup.matemeup.R;
@@ -15,30 +20,122 @@ import com.matemeup.matemeup.entities.rendering.RemoteImageLoader;
 
 import java.util.List;
 
-public class HistoryChatAdapter extends ArrayAdapter<HistoryChat> {
+public class HistoryChatAdapter extends RecyclerView.Adapter<HistoryChatAdapter.ViewHolder> {
     private Context context;
     private List<HistoryChat> history;
+    private int userId;
+    private int textViewResourceId;
 
-    public HistoryChatAdapter(Context ctx, int textViewResourceId, List<HistoryChat> his){
-        super(ctx, textViewResourceId, his);
+    public HistoryChatAdapter(Context ctx, int tvri, List<HistoryChat> his, int id){
+//        super(ctx, textViewResourceId, his);
         context = ctx;
         history = his;
+        userId = id;
+        textViewResourceId = tvri;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public int getItemCount() {
+        return history.size();
+    }
 
-        View view = convertView;
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (view == null)
-            view = inflater.inflate(R.layout.chat_history_list, null, false);
-        HistoryChat msg = history.get(position);
-        System.out.println("Hello dans getView " + msg.message);
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(textViewResourceId, parent, false);
+        return new ViewHolder(view);
+    }
 
-        ((TextView)view.findViewById(R.id.username_container)).setText(msg.senderUserName);
-        ((TextView)view.findViewById(R.id.message_container)).setText(msg.message);
-        return view;
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        HistoryChat chat = history.get(position);
+        holder.display(chat);
+    }
+
+//    @Override
+//    public View getView(int position, View convertView, ViewGroup parent)
+//    {
+//        View view = convertView;
+//        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        HistoryChat msg = history.get(position);
+//        if (view == null)
+//        {
+//            view = inflater.inflate(R.layout.item_chat_history, null, false);
+//        }
+//
+//        if (msg.senderUserId == userId)
+//        {
+//            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+//            view.findViewById(R.id.message_container).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
+//        else
+//        {
+//            view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//            view.findViewById(R.id.message_container).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+//        }
+//        if (position + 1 >= history.size() || (history.get(position + 1).senderUserId != msg.senderUserId))
+//            view.findViewById(R.id.avatar_container).setVisibility(View.VISIBLE);
+//        else
+//            view.findViewById(R.id.avatar_container).setVisibility(View.INVISIBLE);
+//
+//        ((TextView)view.findViewById(R.id.message_container)).setText(msg.message);
+//        RemoteImageLoader.load((ImageView)view.findViewById(R.id.avatar_container), msg.senderUserAvatar);
+//        return view;
+//    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView  messageContainer;
+        private final ImageView avatarContainer;
+        private HistoryChat currentHistory;
+
+        public ViewHolder(final View itemView) {
+            super(itemView);
+
+            messageContainer = itemView.findViewById(R.id.message_container);
+            avatarContainer = itemView.findViewById(R.id.avatar_container);
+        }
+
+        public void display(HistoryChat h) {
+            currentHistory = h;
+            int sizeInDP = 16;
+
+            int marginInDp = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, sizeInDP, context.getResources()
+                            .getDisplayMetrics());
+
+            int marginInDp2 = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, sizeInDP / 2, context.getResources()
+                            .getDisplayMetrics());
+
+
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+            if (currentHistory.senderUserId == userId)
+            {
+                itemView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                itemView.findViewById(R.id.message_container).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            }
+            else
+            {
+                itemView.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+                itemView.findViewById(R.id.message_container).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            }
+            if (getAdapterPosition() + 1 >= history.size() || (history.get(getLayoutPosition()+ 1).senderUserId != currentHistory.senderUserId))
+                itemView.findViewById(R.id.avatar_container).setVisibility(View.VISIBLE);
+            else
+                itemView.findViewById(R.id.avatar_container).setVisibility(View.INVISIBLE);
+
+            messageContainer.setText(currentHistory.message);
+            params.setMargins(marginInDp, marginInDp2, marginInDp, marginInDp2);
+
+            messageContainer.setLayoutParams(params);
+
+            avatarContainer.setClipToOutline(true);
+            RemoteImageLoader.load(avatarContainer, currentHistory.senderUserAvatar);
+        }
     }
 
 }

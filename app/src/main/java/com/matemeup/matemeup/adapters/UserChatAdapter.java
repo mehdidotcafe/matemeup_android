@@ -24,6 +24,18 @@ public class UserChatAdapter extends ArrayAdapter<UserChat> {
         users = u;
     }
 
+    public void setList(List<UserChat> u) {
+        users = u;
+        System.out.println("users " + users);
+        notifyDataSetInvalidated();
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getCount() {
+        return users.size();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
@@ -33,7 +45,8 @@ public class UserChatAdapter extends ArrayAdapter<UserChat> {
             view = inflater.inflate(R.layout.chat_user_list, null, false);
         UserChat user = users.get(position);
         ((TextView)view.findViewById(R.id.username_container)).setText(user.name);
-        ImageView img = (ImageView)view.findViewById(R.id.avatar_container);
+        ImageView img = view.findViewById(R.id.avatar_container);
+        img.setClipToOutline(true);
         RemoteImageLoader.load(img, user.avatar);
         return view;
     }
