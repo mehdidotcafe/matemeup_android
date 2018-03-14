@@ -96,7 +96,7 @@ public class FriendsActivity extends BackToolbarActivity {
             @Override
             public void onMessage(String message, Object... args) {
                 friends.add(new UserChat((JSONObject)args[0]));
-                friendAdapter.notifyDataSetChanged();
+                friendAdapter.notifyItemInserted(friends.size() - 1);
             }
         });
 

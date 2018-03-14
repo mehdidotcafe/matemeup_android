@@ -1,6 +1,5 @@
 package com.matemeup.matemeup;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,13 +9,10 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.containers.Quad;
-import com.matemeup.matemeup.entities.model.UserChat;
-import com.matemeup.matemeup.entities.rendering.RemoteImageLoader;
+import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,10 +22,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class ProfileActivity extends AccountModifierLayout {
 
@@ -76,7 +70,7 @@ public class ProfileActivity extends AccountModifierLayout {
                 return value.toString().length() == 0 || Validator.validateString((String) value);
             }
         }, "password_confirmation"));
-        fieldsId.add(new Quad(R.id.location_input, new ValueGetter() {
+        fieldsId.add(new Quad(R.id.place_autocomplete_fragment, new ValueGetter() {
             public Object get(View _view) {
                 //return "Paris, France";
                 return placeAddress;
@@ -192,13 +186,13 @@ public class ProfileActivity extends AccountModifierLayout {
 
             ((TextView)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(user.getString("location"));
             placeAddress = user.getString("location");
-            autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_button).setVisibility(View.GONE);
-            ((TextView)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(16.0f);
+            stylizePlaceFragment();
             ((TextView) findViewById(R.id.username_container)).setText(user.getString("name"));
             ((Spinner) findViewById(R.id.gender_spinner)).setSelection(user.getInt("gender"));
             findViewById(R.id.avatar_container).setClipToOutline(true);
-            RemoteImageLoader.load((ImageView)findViewById(R.id.avatar_container), user.getString("avatar"));
+            AvatarRemoteImageLoader.load((ImageView)findViewById(R.id.avatar_container), user.getString("avatar"));
         } catch (JSONException e) {}
+        findViewById(R.id.profile_container).setVisibility(View.VISIBLE);
     }
 
     private void getUser() {

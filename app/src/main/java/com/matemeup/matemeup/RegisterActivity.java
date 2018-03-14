@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,8 +46,7 @@ public class RegisterActivity extends AccountModifierLayout {
 
         fieldsId.add(new Quad(R.id.name_input, new ValueGetter() {
             public Object get(View _view) {
-                return "toto";
-                //return getFromString(_view);
+                return getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -56,8 +56,7 @@ public class RegisterActivity extends AccountModifierLayout {
 
         fieldsId.add(new Quad(R.id.email_input, new ValueGetter() {
             public Object get(View _view) {
-                return "foobarrrrrrrrrr@momo.fr";
-                //return getFromString(_view);
+                return getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -66,8 +65,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "email"));
         fieldsId.add(new Quad(R.id.register_password_input, new ValueGetter() {
             public Object get(View _view) {
-                return "aqwzsxedc";
-                //return getFromString(_view);
+                return getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -76,18 +74,16 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "password"));
         fieldsId.add(new Quad(R.id.conf_password_input, new ValueGetter() {
             public Object get(View _view) {
-                return "aqwzsxedc";
-                //return getFromString(_view);
+                return getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return Validator.validateConfPassword((String) value, (String) map.get("password"));
             }
         }, "password_confirmation"));
-        fieldsId.add(new Quad(R.id.location_input, new ValueGetter() {
+        fieldsId.add(new Quad(R.id.place_autocomplete_fragment, new ValueGetter() {
             public Object get(View _view) {
-                return "Paris, France";
-                //return placeAddress;
+                return placeAddress;
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -96,18 +92,16 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "location"));
         fieldsId.add(new Quad(R.id.sponsor_input, new ValueGetter() {
             public Object get(View _view) {
-                return "bonjour";
-                //return getFromString(_view);
+                return getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
-                return Validator.validateString((String) value);
+                return true;
             }
         }, "parrain"));
         fieldsId.add(new Quad(R.id.firstname_input, new ValueGetter() {
             public Object get(View _view) {
-                return "mehdi";
-                //return getFromString(_view);
+                return getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -116,8 +110,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "firstname"));
         fieldsId.add(new Quad(R.id.lastname_input, new ValueGetter() {
             public Object get(View _view) {
-                return "meddour";
-                //return getFromString(_view);
+                return getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -126,8 +119,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "lastname"));
         fieldsId.add(new Quad(R.id.identity_visibility_input, new ValueGetter() {
             public Object get(View _view) {
-                return 1;
-                //return getFromBoolean(_view);
+                return getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -136,8 +128,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "showLastName"));
         fieldsId.add(new Quad(R.id.chat_visibility_input, new ValueGetter() {
             public Object get(View _view) {
-                return 1;
-                //return getFromBoolean(_view);
+                return getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -146,8 +137,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "allMP"));
         fieldsId.add(new Quad(R.id.accept_email_input, new ValueGetter() {
             public Object get(View _view) {
-                return 1;
-                //return getFromBoolean(_view);
+                return getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -157,52 +147,57 @@ public class RegisterActivity extends AccountModifierLayout {
 
         fieldsId.add(new Quad(R.id.accept_CGU_input, new ValueGetter() {
             public Object get(View _view) {
-                return 1;
-                //return getFromBoolean(_view);
+                return getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
-                return true;
-                //return (Boolean) value;
+                return (Boolean) value;
             }
         }, "accept_cgu"));
-        fieldsId.add(new Quad(R.id.gender_input, new ValueGetter() {
+        fieldsId.add(new Quad(R.id.gender_spinner, new ValueGetter() {
             public Object get(View _view) {
-                return 1;
-                //return getFromBoolean(_view);
+                return getFromGender(_view);
             }
-        }, new ValueValidation() {
+        }, new RegisterActivity.ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
-                Integer ival = (Integer)value;
-                return ival == 0 || ival == 1;
+                return true;
             }
         }, "gender"));
         fieldsId.add(new Quad(null, new ValueGetter() {
             public Object get(View _view) {
-                return 1990;
-                //return birthdate.year;
+                Calendar cal = Calendar.getInstance();
+
+                cal.setTime(birthdate);
+                //return 1990;
+                return cal.get(Calendar.YEAR);
             }
-        }, new ValueValidation() {
+        }, new RegisterActivity.ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
         }, "bdyear"));
         fieldsId.add(new Quad(null, new ValueGetter() {
             public Object get(View _view) {
-                return 11;
-                //return birthdate.month;
+                Calendar cal = Calendar.getInstance();
+
+                cal.setTime(birthdate);
+                //return 2;
+                return cal.get(Calendar.MONTH) + 1;
             }
-        }, new ValueValidation() {
+        }, new RegisterActivity.ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
         }, "bdmonth"));
         fieldsId.add(new Quad(null, new ValueGetter() {
             public Object get(View _view) {
-                return 01;
-                //return birthdate.day;
+                Calendar cal = Calendar.getInstance();
+
+                cal.setTime(birthdate);
+                //return 1;
+                return cal.get(Calendar.DAY_OF_MONTH);
             }
-        }, new ValueValidation() {
+        }, new RegisterActivity.ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -224,7 +219,7 @@ public class RegisterActivity extends AccountModifierLayout {
                         token = "";
                     }
 
-                    JWT.put(RegisterActivity.this, token);
+                    JWT.putAPI(RegisterActivity.this, token);
                     Request.addQueryString("token", token);
                     goToHome();
                 }
@@ -244,6 +239,6 @@ public class RegisterActivity extends AccountModifierLayout {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_register);
-
+        stylizePlaceFragment(true);
     }
 }

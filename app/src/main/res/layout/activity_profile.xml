@@ -2,6 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_container"
+    android:visibility="invisible"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity"
@@ -45,6 +47,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:fontFamily="sans-serif-condensed"
                 android:id="@+id/username_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,6 +63,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/include2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -301,10 +305,12 @@
             </LinearLayout>
 
             <Button
+                android:textColor="@color/colorButton"
+                android:background="@drawable/button_background_ripple"
                 android:id="@+id/submitmodification-button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="48dp"
                 android:onClick="submitModif"
                 android:text="Mettre a jour" />
 

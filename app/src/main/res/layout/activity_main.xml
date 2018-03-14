@@ -2,84 +2,102 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/loader_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
     <android.support.constraint.ConstraintLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/login_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp">
 
-        <LinearLayout
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="108dp"
-            android:gravity="center_horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="128dp"
-                android:src="@drawable/logo" />
-        </LinearLayout>
-
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="128dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="72dp"
-            android:onClick="goToLogin"
-            android:text="Se connecter"
+            android:layout_marginTop="80dp"
+            android:src="@drawable/logo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <ProgressBar
+            android:id="@+id/loader_progressbar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:onClick="goToRegister"
-            android:text="S'inscrire"
+            android:layout_marginTop="196dp"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/connection_buttons"
+            android:layout_width="0dp"
+            android:layout_height="239dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="64dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button2" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.0">
 
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="104dp"
+                android:background="@drawable/button_background_ripple"
+                android:onClick="goToLogin"
+                android:text="Se connecter"
+                android:textColor="@color/colorButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/button_background_ripple"
+                android:onClick="goToRegister"
+                android:text="S'inscrire"
+                android:textColor="@color/colorButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button2" />
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
-        android:gravity="center"
-        android:orientation="vertical"
         android:id="@+id/loader_screen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="128dp"
-            android:src="@drawable/logo" />
-
-        <ProgressBar
-            android:indeterminateTint="@color/colorPrimary"
-            android:indeterminateTintMode="src_in"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="144dp" />
     </LinearLayout>
 
 </RelativeLayout>

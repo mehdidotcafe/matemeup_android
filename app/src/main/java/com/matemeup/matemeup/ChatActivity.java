@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.matemeup.matemeup.adapters.HistoryChatAdapter;
+import com.matemeup.matemeup.entities.BitmapGetter;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.model.HistoryChat;
 import com.matemeup.matemeup.entities.model.UserChat;
@@ -55,33 +56,27 @@ public class ChatActivity extends UserToolbarActivity {
 
         ws.emit(sendURL, obj, null);
     }
+
+    public void sendImage(String image) {
+        JSONObject obj = new JSONObject();
+
+        try {
+            obj.put("userId", user.id);
+            obj.put("type", 2);
+            obj.put("message", image);
+        } catch (JSONException e) {return ;}
+
+        ws.emit(sendURL, obj, null);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            String image = BitmapGetter.get(this, data, 10 * 1000);
+            sendImage(image);
 
-            Uri uri = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
-                try {
-                    byte[] b = baos.toByteArray();
-                    String temp = Base64.encodeToString(b, Base64.DEFAULT);
-                } catch (NullPointerException e) {
-                   System.out.println("bitmaperror1");
-                    e.printStackTrace();
-                } catch (OutOfMemoryError e) {
-                    System.out.println("bitmaperror2");
-                    e.printStackTrace();
-                }
-
-//                System.out.println("encoded " + encodedImage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -104,6 +99,7 @@ public class ChatActivity extends UserToolbarActivity {
 
     private void renderMessages(JSONObject data, Boolean goToBottom) throws JSONException {
         JSONArray messages;
+        int startIndex = list.size();
 
         try {
             messages = new JSONArray(data.getString("history"));
@@ -114,7 +110,7 @@ public class ChatActivity extends UserToolbarActivity {
         index += messages.length();
         for (int i = 0; i <= messages.length() - 1; i++)
         {
-            list.add(0, new HistoryChat(messages.getJSONObject(i)));
+            list.add(i, new HistoryChat(messages.getJSONObject(i)));
         }
         adapter.notifyItemRangeInserted(0, messages.length());
 
@@ -213,7 +209,7 @@ public class ChatActivity extends UserToolbarActivity {
     private void initList(){
         final RecyclerView fl = (RecyclerView)findViewById(R.id.message_list);
 
-        adapter = new HistoryChatAdapter(this, R.layout.item_chat_history, list, user.id);
+        adapter = new HistoryChatAdapter(this, R.layout.item_chat_text_history, R.layout.item_chat_image_history, list, user.id);
         fl.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         fl.setAdapter(adapter);
 

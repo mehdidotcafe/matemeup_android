@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends BackToolbarActivity {
 
     public void goToLogin()
     {
@@ -56,7 +56,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        super.onCreate(savedInstanceState, R.layout.activity_forgot_password);
     }
 }

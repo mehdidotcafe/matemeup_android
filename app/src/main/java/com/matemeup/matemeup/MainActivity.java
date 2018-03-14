@@ -1,5 +1,7 @@
 package com.matemeup.matemeup;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +18,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private void checkJWT()
     {
-        String jwt = JWT.get(this);
+        String jwt = JWT.getAPI(this);
 
         System.out.println(jwt);
         if (jwt != null && !jwt.equals(""))
@@ -34,8 +36,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void fail(String error)
             {
-                findViewById(R.id.loader_screen).setVisibility(View.GONE);
-                findViewById(R.id.login_screen).setVisibility(View.VISIBLE);
+                final View loader = findViewById(R.id.loader_progressbar);
+
+                loader.animate()
+                        .alpha(0.0f)
+                        .setDuration(750)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                loader.setVisibility(View.GONE);
+                                findViewById(R.id.connection_buttons).setVisibility(View.VISIBLE);
+                            }
+                        });
             }
         });
 

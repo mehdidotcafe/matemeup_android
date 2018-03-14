@@ -10,6 +10,7 @@ import com.koushikdutta.ion.Ion;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class Request {
 
     }
 
-    private String setDefaultUrlParams(String route)
+    private String setDefaultUrlParams(String route, JSONObject obj)
     {
         Boolean isFirst = true;
 
@@ -57,6 +58,21 @@ public class Request {
             else
                 route += '&';
             route += entry.getKey() + '=' + entry.getValue();
+        }
+
+        if (obj != null) {
+            try {
+                for (int i = 0; i < obj.names().length(); i++) {
+                    if (isFirst)
+                    {
+                        route += '?' ;
+                        isFirst = false;
+                    }
+                    else
+                        route += '&';
+                    route += obj.names().getString(i) + '=' + obj.get(obj.names().getString(i));
+                }
+            } catch (JSONException e) {}
         }
         return route;
     }
@@ -83,15 +99,41 @@ public class Request {
         return ret;
     }
 
-    public void send(Context ctx, String route, String method, JSONObject header, JSONObject body)
+    public void sendFile(Context ctx, String route, String pathname, JSONObject queryString) {
+        Ion.with(ctx)
+                .load( setDefaultUrlParams(BASE_URL + route, queryString))
+                .setMultipartFile("file", "application/octet", new File(pathname))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        System.out.println("Success");
+                        Boolean isSucceed = result != null && result.get("success") != null && result.get("success").getAsBoolean();
+
+                        try {
+                            if (isSucceed) {
+                                success(result.get("data") != null ? new JSONObject(result.get("data").toString()) : null);
+                            }
+                            else
+                            {
+                                JsonElement ret = result != null ? result.get("message") : null;
+
+                                if (result != null && ret == null)
+                                    ret = result.get("error");
+                                fail(ret != null ? ret.getAsString() : "unknowError");
+                            }
+                        } catch (JSONException error) {}
+                    }
+                });
+    }
+
+    public void send(Context ctx, String route, String method, JSONObject queryString, JSONObject body)
     {
         com.koushikdutta.ion.builder.Builders.Any.B req = Ion.with(ctx)
-                .load(method, setDefaultUrlParams(BASE_URL + route));
+                .load(method, setDefaultUrlParams(BASE_URL + route, queryString));
 
         if (body != null)
             req.setJsonObjectBody(format(body));
-        //if (header != null)
-        //    req.setHeader("foo", "bar");
         req.asJsonObject()
             .setCallback(new FutureCallback<JsonObject>() {
         @Override

@@ -1,6 +1,7 @@
 package com.matemeup.matemeup;
 
 import android.app.DialogFragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -113,14 +114,32 @@ public class AccountModifierLayout extends BackToolbarActivity implements DatePi
 
     protected void configureGenderSpinner() {
         Spinner spinner = (Spinner) findViewById(R.id.gender_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-            R.array.genders_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
 
+        if (spinner != null) {
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.genders_array, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+        }
+
+
+    }
+
+    public void stylizePlaceFragment() {
+        stylizePlaceFragment(false);
+    }
+
+    public void stylizePlaceFragment(Boolean needColor) {
+        TextView text = autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input);
+
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_button).setVisibility(View.GONE);
+        text.setTextSize(16.0f);
+        if (needColor == true) {
+            text.setTextColor(Color.WHITE);
+        }
     }
 
     public void onCreate(Bundle savedInstanceState, int resourceId) {

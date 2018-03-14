@@ -13,12 +13,11 @@ import com.matemeup.matemeup.entities.IntentManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BackToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        super.onCreate(savedInstanceState, R.layout.activity_login);
     }
 
     public void goToHome()
@@ -56,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     token = "";
                 }
 
-                JWT.put(LoginActivity.this, token);
+                JWT.putAPI(LoginActivity.this, token);
                 Request.addQueryString("token", token);
                 goToHome();
             }

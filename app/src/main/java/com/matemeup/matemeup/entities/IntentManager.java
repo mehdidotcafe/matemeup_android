@@ -40,7 +40,9 @@ public class IntentManager {
     {
         Intent intent = new Intent(packageContext, cls);
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        packageContext.startActivity(intent);
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(packageContext,
+                android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+        packageContext.startActivity(intent, bundle);
         ((Activity)packageContext).finish();
     }
 

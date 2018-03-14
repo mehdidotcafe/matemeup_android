@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.matemeup.matemeup.R;
 
 import com.matemeup.matemeup.entities.model.UserChat;
-import com.matemeup.matemeup.entities.rendering.RemoteImageLoader;
+import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class UserChatAdapter extends ArrayAdapter<UserChat> {
         ((TextView)view.findViewById(R.id.username_container)).setText(user.name);
         ImageView img = view.findViewById(R.id.avatar_container);
         img.setClipToOutline(true);
-        RemoteImageLoader.load(img, user.avatar);
+        AvatarRemoteImageLoader.load(img, user.avatar);
         return view;
     }
 }

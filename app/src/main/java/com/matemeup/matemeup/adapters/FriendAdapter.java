@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.model.UserChat;
 import com.matemeup.matemeup.entities.rendering.Alert;
 import com.matemeup.matemeup.entities.rendering.AlertCallback;
-import com.matemeup.matemeup.entities.rendering.RemoteImageLoader;
+import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocketCallback;
@@ -139,7 +138,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             name.setText(currentUser.name);
 
             img.setClipToOutline(true);
-            RemoteImageLoader.load(img, currentUser.avatar);
+            AvatarRemoteImageLoader.load(img, currentUser.avatar);
         }
     }
 

@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.matemeup.matemeup.R;
 import com.matemeup.matemeup.entities.model.UserChat;
-import com.matemeup.matemeup.entities.rendering.RemoteImageLoader;
+import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocketCallback;
@@ -132,7 +131,7 @@ public class PendingFriendAdapter extends RecyclerView.Adapter<PendingFriendAdap
             currentUser = user;
             name.setText(user.name);
             img.setClipToOutline(true);
-            RemoteImageLoader.load(img, user.avatar);
+            AvatarRemoteImageLoader.load(img, user.avatar);
         }
     }
 

@@ -5,19 +5,17 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.matemeup.matemeup.R;
 import com.matemeup.matemeup.entities.model.UserChat;
-import com.matemeup.matemeup.entities.rendering.RemoteImageLoader;
+import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserAutocompleteAdapter extends RemoteArrayAdapter<UserChat> {
 
@@ -45,7 +43,7 @@ public class UserAutocompleteAdapter extends RemoteArrayAdapter<UserChat> {
         UserChat user = super.getItem(position);
         ((TextView)view.findViewById(R.id.username_autocomplete_container)).setText(user.name);
         ImageView img = view.findViewById(R.id.avatar_autocomplete_container);
-        RemoteImageLoader.load(img, user.avatar);
+        AvatarRemoteImageLoader.load(img, user.avatar);
         return view;
     }
 
