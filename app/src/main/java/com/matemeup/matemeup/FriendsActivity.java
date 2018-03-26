@@ -154,7 +154,7 @@ public class FriendsActivity extends BackToolbarActivity {
 
                     try {
                         System.out.println(resp.getBoolean("state"));
-                        Alert.ok(self, "Ajout d'un ami", resp.getBoolean("state") == true ? "Demande d'ami envoyée" : "Vous avez deja cette personne en ami", new AlertCallback() {});
+                        Alert.ok(self, getResources().getString(R.string.add_friend), resp.getBoolean("state") ? getResources().getString(R.string.friend_invitation_sent) : getResources().getString(R.string.user_already_friend), new AlertCallback() {});
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

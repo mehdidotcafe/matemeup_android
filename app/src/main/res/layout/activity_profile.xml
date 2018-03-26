@@ -92,7 +92,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Prénom" />
+                        android:text="@string/firstname" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ems="10"
-                            android:hint="Prénom"
+                            android:hint="@string/firstname"
                             android:inputType="textPersonName" />
                     </LinearLayout>
                 </LinearLayout>
@@ -126,14 +126,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nom" />
+                        android:text="@string/lastname" />
 
                     <EditText
                         android:id="@+id/lastname_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="Nom"
+                        android:hint="@string/lastname"
                         android:inputType="textPersonName" />
                 </LinearLayout>
             </LinearLayout>
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Mot de passe" />
+                android:text="@string/password" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -164,14 +164,14 @@
                     android:ems="10"
                     android:inputType="textPassword"
                     android:textColor="#000000"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Confirmation du mot de passe" />
+                android:text="@string/password_confirmation" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -193,14 +193,14 @@
                     android:ems="10"
                     android:inputType="textPassword"
                     android:textColor="#000000"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Date de naissance" />
+                android:text="@string/birthdate" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -222,7 +222,7 @@
                     android:ems="10"
                     android:onClick="showBirthdatePicker"
                     android:textColor="#000000"
-                    android:textSize="16dp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
 
@@ -230,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Location" />
+                android:text="@string/location" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -256,7 +256,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Sexe" />
+                android:text="@string/gender" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -281,7 +281,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Visibilité" />
+                android:text="@string/visibility" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -292,7 +292,7 @@
                 <TextView
                     android:layout_width="196dp"
                     android:layout_height="wrap_content"
-                    android:text="Permettre à tous de me contacter en message privés" />
+                    android:text="@string/allow_contact_me_by_mp" />
 
                 <Switch
                     android:id="@+id/chat_visibility_input"
@@ -312,7 +312,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="48dp"
                 android:onClick="submitModif"
-                android:text="Mettre a jour" />
+                android:text="@string/update" />
 
 
         </LinearLayout>

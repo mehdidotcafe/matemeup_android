@@ -48,7 +48,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_person_white_24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Pseudonyme"
+                android:hint="@string/pseudo"
                 android:inputType="textUri" />
 
         </LinearLayout>
@@ -85,7 +85,7 @@
                     android:id="@+id/firstname_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Prénom" />
+                    android:hint="@string/firstname" />
 
             </LinearLayout>
 
@@ -109,7 +109,7 @@
                     android:id="@+id/lastname_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nom" />
+                    android:hint="@string/lastname" />
 
             </LinearLayout>
 
@@ -134,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Adresse Mail"/>
+                android:hint="@string/email"/>
 
         </LinearLayout>
 
@@ -159,7 +159,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Mot de passe"
+                android:hint="@string/password"
                 android:inputType="textPassword"/>
 
         </LinearLayout>
@@ -185,7 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Confirmation"
+                android:hint="@string/password_confirmation"
                 android:inputType="textPassword"/>
 
 
@@ -208,7 +208,7 @@
              <TextView
                  android:layout_marginStart="4dp"
                  android:textColorHint="@color/colorPlaceholder"
-                 android:hint="Date de naissance"
+                 android:hint="@string/birthdate"
                  android:id="@+id/birthdate_input"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
@@ -274,7 +274,7 @@
                 android:id="@+id/sponsor_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Parrain" />
+                android:hint="@string/godparent" />
 
         </LinearLayout>
 
@@ -288,7 +288,7 @@
             <TextView
                 android:gravity="center_vertical"
                 android:textColor="@color/colorPlaceholder"
-                android:text="Montrer mon nom publiquement"
+                android:text="@string/show_my_name"
                 android:layout_width="196dp"
                 android:layout_height="wrap_content" />
             <Switch
@@ -308,7 +308,7 @@
             <TextView
                 android:gravity="center_vertical"
                 android:textColor="@color/colorPlaceholder"
-                android:text="Permettre à tous de me contacter en message privé"
+                android:text="@string/allow_contact_me_by_mp"
                 android:layout_width="196dp"
                 android:layout_height="match_parent" />
             <Switch
@@ -328,7 +328,7 @@
             <TextView
                 android:gravity="center_vertical"
                 android:textColor="@color/colorPlaceholder"
-                android:text="J'accepte de recevoir des e-mails de MateMeUp"
+                android:text="@string/accept_receive_email_from_mmu"
                 android:layout_width="196dp"
                 android:layout_height="wrap_content" />
             <Switch
@@ -349,7 +349,7 @@
             <TextView
                 android:gravity="center_vertical"
                 android:textColor="@color/colorPlaceholder"
-                android:text="J'accepte les CGU"
+                android:text="@string/accept_cgu"
                 android:layout_width="196dp"
                 android:layout_height="wrap_content" />
             <Switch
@@ -368,7 +368,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_background_ripple"
                 android:onClick="submitRegister"
-                android:text="S'inscrire"
+                android:text="@string/register"
                 android:textColor="@color/colorButton" />
 
         </LinearLayout>

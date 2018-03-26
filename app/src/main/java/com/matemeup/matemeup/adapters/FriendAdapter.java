@@ -85,14 +85,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         final FriendAdapter self = this;
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                self.createAlert("Voulez-vous vraiment supprimer " + user.name + " ?", user);
+                self.createAlert(context.getResources().getString(R.string.confirm_suppr, user.name), user);
             }
         });
     }
 
     private void createAlert(String message, final UserChat user) {
 
-        Alert.yesNo(context, "Supprimer un ami", message, new AlertCallback() {
+        Alert.yesNo(context, context.getResources().getString(R.string.erase_friend), message, new AlertCallback() {
             public void success() {
                 JSONObject obj = new JSONObject();
 

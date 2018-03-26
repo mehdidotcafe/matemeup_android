@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Nom d'utilisateur"
+            android:hint="@string/username"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorButton"
             android:textColorHint="@color/colorPlaceholder" />
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Mot de passe"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="@color/colorButton"
             android:textColorHint="#CCCCCCCC" />
@@ -95,7 +95,7 @@
         android:layout_marginTop="104dp"
         android:background="@drawable/button_background_ripple"
         android:onClick="onSubmit"
-        android:text="Connexion"
+        android:text="@string/connexion"
         android:textColor="@color/colorButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -111,7 +111,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:onClick="goToForgotPassword"
-        android:text="Mot de passe oublié ?"
+        android:text="@string/forgot_password_q"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />

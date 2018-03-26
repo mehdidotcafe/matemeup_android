@@ -66,7 +66,6 @@ public class UserChatNotifAdapter extends RecyclerView.Adapter<UserChatNotifAdap
         }
 
         public void display(UserChatNotif user) {
-            System.out.println("user adapter " + user);
             currentUser = user;
             View view = itemView;
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

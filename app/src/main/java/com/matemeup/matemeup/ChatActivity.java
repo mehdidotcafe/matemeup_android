@@ -88,7 +88,7 @@ public class ChatActivity extends UserToolbarActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         // Always show the chooser (if there are multiple options available)
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.select_picture)), 1);
     }
 
     public void sendTextFromButton(View view) {
@@ -174,7 +174,6 @@ public class ChatActivity extends UserToolbarActivity {
         ws.on("global.chat.new", new WebSocketCallback() {
             @Override
             public void onMessage(final String message, final Object... args) {
-                System.out.println("new message " + args[0]);
                 HistoryChat msg = new HistoryChat((JSONObject)args[0]);
                 if (msg.senderUserId == user.id || msg.receiverUserId == user.id)
                     onNewMessage(msg);

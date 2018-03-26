@@ -34,7 +34,7 @@
             android:id="@+id/chat_input"
             android:layout_width="288dp"
             android:layout_height="match_parent"
-            android:hint="Exprimez-vous" />
+            android:hint="@string/say_something" />
 
         <RelativeLayout
             android:background="@drawable/red_background"

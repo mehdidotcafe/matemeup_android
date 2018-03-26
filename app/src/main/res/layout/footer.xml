@@ -43,7 +43,6 @@
                         android:textSize="12sp"
                         android:gravity="center"
                         android:id="@+id/chat_notif_count"
-                        android:text="20"
                         android:textColor="#FFFFFF" />
 
             </RelativeLayout>
@@ -94,7 +93,6 @@
                     android:textSize="12sp"
                     android:gravity="center"
                     android:id="@+id/friend_notif_count"
-                    android:text="20"
                     android:textColor="#FFFFFF" />
 
             </RelativeLayout>

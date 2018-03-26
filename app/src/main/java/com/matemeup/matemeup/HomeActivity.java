@@ -144,7 +144,6 @@ public class HomeActivity extends SearchToolbarActivity {
             {
                 chatFragment.addUserFromMessageReceiver(msg);
                 if (invitationFragment.contains(msg.receiverUserId)) {
-                    System.out.println("removing user " + msg.receiverUserId);
                     invitationFragment.removeUserFromMessageReceiver(msg);
                 }
             }

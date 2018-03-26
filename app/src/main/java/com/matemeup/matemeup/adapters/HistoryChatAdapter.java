@@ -25,7 +25,6 @@ public class HistoryChatAdapter extends RecyclerView.Adapter<HistoryChatAdapter.
     private int imageViewResourceId;
 
     public HistoryChatAdapter(Context ctx, int mvri, int ivri, List<HistoryChat> his, int id){
-//        super(ctx, textViewResourceId, his);
         context = ctx;
         history = his;
         userId = id;
@@ -53,7 +52,6 @@ public class HistoryChatAdapter extends RecyclerView.Adapter<HistoryChatAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HistoryChat chat = history.get(position);
-        System.out.println("chat " + chat.senderUserName + " " + chat.senderUserAvatar + " " + chat.type + " " + chat.message);
         holder.display(chat);
     }
 

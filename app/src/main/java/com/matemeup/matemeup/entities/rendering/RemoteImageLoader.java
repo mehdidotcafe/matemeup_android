@@ -16,10 +16,6 @@ public class RemoteImageLoader {
         else
             loadUrl += '/' + name;
         Ion.with(view)
-                //.placeholder(R.drawable.placeholder_image)
-                //.error(R.drawable.error_image)
-                //.animateLoad(spinAnimation)
-                //.animateIn(fadeInAnimation)
                 .load(loadUrl );
     }
 }
