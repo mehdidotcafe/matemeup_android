@@ -11,11 +11,12 @@ public class InvitationFragment extends UserChatListFragment {
     public InvitationFragment() {
         super();
         GET_USER_MSG = "global.chat.user.invitation.get";
+        isInvitation = true;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState, true);
     }
 
     @Override

@@ -9,6 +9,8 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.matemeup.matemeup.entities.Callback;
+import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.containers.Quad;
@@ -144,33 +146,16 @@ public class ProfileActivity extends AccountModifierLayout {
             System.out.println("Error validating form");
         }
         else {
-            System.out.println("I SEND REQUEST");
-            System.out.println(obj);
-            Request req = (new Request()
-            {
-                @Override
-                public void success(JSONObject data)
-                {
-                    System.out.println("Hello");
-                }
+            Request req = Request.getInstance();
+            Callback cb = new Callback();
 
-                @Override
-                public void fail(String error)
-                {
-                    System.out.println("Dans le fail");
-                    System.out.println(error);
-                }
-            });
-
-            req.send(this, "update", "POST", null, obj);
+            req.send(this, "update", "POST", null, obj, cb);
         }
 
     }
 
     private void updateLayoutFromUser(JSONObject user)
     {
-        System.out.println(user);
-
         try {
             ((EditText) findViewById(R.id.firstname_input)).setText(user.getString("firstname"));
             ((EditText) findViewById(R.id.lastname_input)).setText(user.getString("lastname"));
@@ -196,19 +181,22 @@ public class ProfileActivity extends AccountModifierLayout {
     }
 
     private void getUser() {
-        Request req = new Request() {
-            public void success(JSONObject result) {
+        Request req = Request.getInstance();
+        Callback cb = new Callback()
+        {
+            public void success(Object data) {
+                JSONObject result = (JSONObject)data;
                 try {
                     updateLayoutFromUser(result.getJSONObject("user"));
                 } catch (JSONException e) {}
             }
 
             public void fail(String res) {
-                System.out.println("Ca foire " + res);
+                System.out.println("fail" + res);
             }
         };
 
-        req.send(this, "me", "GET", null, null);
+        req.send(this, "me", "GET", null, null, cb);
     }
 
     private void initToolbar() {
@@ -219,6 +207,7 @@ public class ProfileActivity extends AccountModifierLayout {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_profile);
+        IntentManager.setCurrentActivity(ProfileActivity.class);
         initToolbar();
         getUser();
     }

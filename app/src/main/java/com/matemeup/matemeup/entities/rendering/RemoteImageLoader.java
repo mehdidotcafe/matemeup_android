@@ -15,7 +15,6 @@ public class RemoteImageLoader {
         }
         else
             loadUrl += '/' + name;
-        System.out.println("url " + loadUrl);
         Ion.with(view)
                 //.placeholder(R.drawable.placeholder_image)
                 //.error(R.drawable.error_image)

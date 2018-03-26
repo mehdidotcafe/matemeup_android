@@ -53,39 +53,9 @@ public class HistoryChatAdapter extends RecyclerView.Adapter<HistoryChatAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HistoryChat chat = history.get(position);
+        System.out.println("chat " + chat.senderUserName + " " + chat.senderUserAvatar + " " + chat.type + " " + chat.message);
         holder.display(chat);
     }
-
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent)
-//    {
-//        View view = convertView;
-//        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        HistoryChat msg = history.get(position);
-//        if (view == null)
-//        {
-//            view = inflater.inflate(R.layout.item_chat_text_history, null, false);
-//        }
-//
-//        if (msg.senderUserId == userId)
-//        {
-//            view.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-//            view.findViewById(R.id.message_container).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-//        }
-//        else
-//        {
-//            view.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-//            view.findViewById(R.id.message_container).setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-//        }
-//        if (position + 1 >= history.size() || (history.get(position + 1).senderUserId != msg.senderUserId))
-//            view.findViewById(R.id.avatar_container).setVisibility(View.VISIBLE);
-//        else
-//            view.findViewById(R.id.avatar_container).setVisibility(View.INVISIBLE);
-//
-//        ((TextView)view.findViewById(R.id.message_container)).setText(msg.message);
-//        AvatarRemoteImageLoader.load((ImageView)view.findViewById(R.id.avatar_container), msg.senderUserAvatar);
-//        return view;
-//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -144,7 +114,6 @@ public class HistoryChatAdapter extends RecyclerView.Adapter<HistoryChatAdapter.
                 messageContainer.setLayoutParams(params);
             }
             else if (imageContainer != null) {
-                System.out.println("ON EST ICI");
                 ChatRemoteImageLoader.load(imageContainer, currentHistory.message);
             }
         }

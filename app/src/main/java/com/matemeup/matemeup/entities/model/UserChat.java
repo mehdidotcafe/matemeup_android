@@ -25,9 +25,9 @@ public class UserChat implements Serializable<UserChat>{
         avatar = uc.avatar;
     }
 
-    public String toString() {
-        return id + " " + name + " " + avatar;
-    }
+//    public String toString() {
+//        return id + " " + name + " " + avatar;
+//    }
 
     public UserChat(JSONObject obj) {
         fromJSON(obj);

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.gson.JsonObject;
+import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
@@ -20,15 +21,15 @@ public class MainActivity extends AppCompatActivity {
     {
         String jwt = JWT.getAPI(this);
 
-        System.out.println(jwt);
+        Request req = Request.getInstance();
         if (jwt != null && !jwt.equals(""))
         {
-            Request.addQueryString("token", jwt);
+            req.addQueryString("token", jwt);
         }
-        Request req = (new Request()
+        Callback cb = new Callback()
         {
             @Override
-            public void success(JSONObject data)
+            public void success(Object data)
             {
                 goToHome();
             }
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
             }
-        });
+        };
 
-        req.send(this, "me", "GET", null, null);
+        req.send(this, "me", "GET", null, null, cb);
     }
 
     @Override

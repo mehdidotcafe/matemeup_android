@@ -4,13 +4,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class HistoryChat implements Serializable<HistoryChat> {
-    public int senderUserId;
-    public String senderUserName;
-    public String senderUserAvatar;
-    public int receiverUserId;
-    public String receiverUserName;
-    public int type;
-    public String message;
+    public int      senderUserId;
+    public String   senderUserName;
+    public String   senderUserAvatar;
+    public int      receiverUserId;
+    public String   receiverUserName;
+    public String   receiverUserAvatar;
+    public int      type;
+    public String   message;
+    public Boolean  isInvitation;
+    public Boolean  isUser;
 
     public HistoryChat(JSONObject obj) {
         fromJSON(obj);
@@ -26,8 +29,11 @@ public class HistoryChat implements Serializable<HistoryChat> {
             obj.put("receiverUserId", receiverUserId);
             obj.put("senderUserName", senderUserName);
             obj.put("receiverUserName", receiverUserName);
+            obj.put("receiverUserAvatar", receiverUserAvatar);
             obj.put("message", message);
             obj.put("type", type);
+            obj.put("isInvitation", isInvitation);
+            obj.put("isUser", isUser);
         } catch (JSONException e) {return null;}
 
         return obj;
@@ -41,8 +47,11 @@ public class HistoryChat implements Serializable<HistoryChat> {
             senderUserName = obj.getString("senderUserName");
             receiverUserName = obj.getString("receiverUserName");
             senderUserAvatar = obj.getString("senderUserAvatar");
+            receiverUserAvatar = obj.getString("receiverUserAvatar");
             type = obj.getInt("type");
             message = obj.getString("message");
+            isInvitation = obj.getBoolean("isInvitation");
+            isUser = obj.getBoolean("isUser");
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

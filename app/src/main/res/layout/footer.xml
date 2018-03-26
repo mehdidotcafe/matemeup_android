@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -20,45 +21,84 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="replaceChat"
+                    android:src="@drawable/ic_chat_black_24dp" />
+                    <TextView
+                        android:visibility="invisible"
+                        android:background="@drawable/round_outline_red"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="42dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:id="@+id/chat_notif_count"
+                        android:text="20"
+                        android:textColor="#FFFFFF" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".33"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageButton
-                android:onClick="replaceChat"
-                android:background="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_chat_black_24dp" />
-    </LinearLayout>
+                android:background="?attr/selectableItemBackground"
+                android:onClick="replaceProfile"
+                android:src="@drawable/ic_person_black_24dp" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".33"
-        android:gravity="center"
-        android:orientation="vertical">
+        </LinearLayout>
 
-        <ImageButton
-            android:onClick="replaceProfile"
-            android:background="?attr/selectableItemBackground"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_person_black_24dp" />
+            android:layout_weight=".33"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight=".33"
-        android:gravity="center"
-        android:orientation="vertical">
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:onClick="replaceFriends"
+                    android:src="@drawable/ic_people_black_24dp" />
+                <TextView
+                    android:visibility="invisible"
+                    android:background="@drawable/round_outline_red"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="42dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:id="@+id/friend_notif_count"
+                    android:text="20"
+                    android:textColor="#FFFFFF" />
 
-        <ImageButton
-            android:background="?attr/selectableItemBackground"
-            android:onClick="replaceFriends"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_people_black_24dp" />
-    </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

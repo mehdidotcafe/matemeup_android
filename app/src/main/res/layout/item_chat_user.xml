@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?attr/selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -21,4 +22,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         xmlns:android="http://schemas.android.com/apk/res/android" />
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/user_notif_count"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="right|center"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:background="@drawable/round_outline_red"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
 </LinearLayout>

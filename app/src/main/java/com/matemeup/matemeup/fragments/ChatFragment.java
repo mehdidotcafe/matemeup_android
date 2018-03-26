@@ -25,9 +25,8 @@ public class ChatFragment extends UserChatListFragment {
         GET_USER_MSG = "global.chat.user.normal.get";
     }
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState, false);
     }
 
     @Override

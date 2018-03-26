@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
+import com.koushikdutta.async.http.body.JSONObjectBody;
+import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
@@ -17,6 +19,7 @@ public class LoginActivity extends BackToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initSocket = false;
         super.onCreate(savedInstanceState, R.layout.activity_login);
     }
 
@@ -42,12 +45,15 @@ public class LoginActivity extends BackToolbarActivity {
             loginObj.put("password", password);
         } catch (JSONException e) {return ;}
 
-        Request req = (new Request()
+        final Request req = Request.getInstance();
+
+        Callback cb = new Callback()
         {
             @Override
-            public void success(JSONObject data)
+            public void success(Object objData)
             {
                 String token;
+                JSONObject data = (JSONObject)objData;
 
                 try {
                     token = data.getString("token");
@@ -56,7 +62,8 @@ public class LoginActivity extends BackToolbarActivity {
                 }
 
                 JWT.putAPI(LoginActivity.this, token);
-                Request.addQueryString("token", token);
+                System.out.println("got token " + JWT.getAPI(LoginActivity.this));
+                req.addQueryString("token", token);
                 goToHome();
             }
 
@@ -66,8 +73,8 @@ public class LoginActivity extends BackToolbarActivity {
                 System.out.println("Dans le fail login");
                 System.out.println(error);
             }
-        });
+        };
 
-        req.send(this, "login", "POST", null, loginObj);
+        req.send(this, "login", "POST", null, loginObj, cb);
     }
 }

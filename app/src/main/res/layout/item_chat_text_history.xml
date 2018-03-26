@@ -28,6 +28,7 @@
             android:background="@drawable/round_outline_red">
 
             <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:textColor="#FFFFFF"
                 android:id="@+id/message_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

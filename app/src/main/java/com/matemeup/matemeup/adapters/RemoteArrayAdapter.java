@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
+import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.Factory;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Serializer;
@@ -36,9 +37,12 @@ public abstract class RemoteArrayAdapter<T> extends ArrayAdapter<T> {
             @Override
             protected FilterResults performFiltering(final CharSequence constraint) {
                 JSONObject obj = new JSONObject();
-                Request req = new Request() {
-                    public void success(JSONObject result)
+                Request req = Request.getInstance();
+                Callback cb = new Callback()
+                {
+                    public void success(Object data)
                     {
+                        JSONObject result = (JSONObject)data;
                         JSONArray jsonUsers = new JSONArray();
                         try {
                             jsonUsers = result.getJSONArray("users");
@@ -61,7 +65,7 @@ public abstract class RemoteArrayAdapter<T> extends ArrayAdapter<T> {
                     obj.put("needle", constraint);
                 } catch (JSONException e){}
                 if (constraint != null) {
-                    req.send(ctx, route, "GET", null, obj);
+                    req.send(ctx, route, "GET", null, obj, cb);
                 }
                 return null;
             }

@@ -14,6 +14,16 @@ import static java.security.AccessController.getContext;
 
 public class IntentManager {
 
+    private static java.lang.Class currentActivity;
+
+    public static java.lang.Class getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public static void setCurrentActivity(java.lang.Class activity) {
+        currentActivity = activity;
+    }
+
     public static void setExtrasToIntent(Intent activity, JSONObject extras)
     {
         activity.putExtra("params", Serializer.serialize(extras));

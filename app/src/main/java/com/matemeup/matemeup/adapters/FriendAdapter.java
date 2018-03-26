@@ -60,7 +60,13 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         final FriendAdapter self = this;
         View.OnClickListener listener = new View.OnClickListener() {
             public void onClick(View v) {
-                IntentManager.goTo(self.context, ChatActivity.class, user.toJSONObject());
+                JSONObject obj = new JSONObject();
+
+                try {
+                    obj.put("user", user.toJSONObject());
+                    obj.put("isInvitation", false);
+                    IntentManager.goTo(self.context, ChatActivity.class, obj);
+                } catch (JSONException e) {}
             }
         };
 

@@ -16,16 +16,18 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Request {
-    protected String BASE_URL = "http://192.168.0.100:8000/api/";
-    private static Map<String, String> urlParams = new HashMap<String, String>();
+    protected String BASE_URL = "http://192.168.0.104:8000/api/";
+    private  Map<String, String> urlParams = new HashMap();
+    private static Request instance = null;
 
-    public Request(String url) {
-        BASE_URL = url;
+    public static Request getInstance() {
+        if (instance == null) {
+            instance = new Request();
+        }
+        return instance;
     }
 
-    public Request() {}
-
-    public static void addQueryString(String key, String value)
+    public void addQueryString(String key, String value)
     {
         urlParams.put(key, value);
     }
@@ -48,6 +50,7 @@ public class Request {
     {
         Boolean isFirst = true;
 
+        System.out.println("urlParams " + urlParams);
         for (Map.Entry<String, String> entry : urlParams.entrySet())
         {
             if (isFirst)
@@ -127,7 +130,7 @@ public class Request {
                 });
     }
 
-    public void send(Context ctx, String route, String method, JSONObject queryString, JSONObject body)
+    public void send(Context ctx, String route, String method, JSONObject queryString, JSONObject body, final Callback cb)
     {
         com.koushikdutta.ion.builder.Builders.Any.B req = Ion.with(ctx)
                 .load(method, setDefaultUrlParams(BASE_URL + route, queryString));
@@ -143,7 +146,7 @@ public class Request {
 
             try {
                 if (isSucceed) {
-                    success(result.get("data") != null ? new JSONObject(result.get("data").toString()) : null);
+                    cb.success(result.get("data") != null ? new JSONObject(result.get("data").toString()) : null);
                 }
                 else
                 {
@@ -151,7 +154,7 @@ public class Request {
 
                     if (result != null && ret == null)
                         ret = result.get("error");
-                    fail(ret != null ? ret.getAsString() : "unknowError");
+                    cb.fail(ret != null ? ret.getAsString() : "unknowError");
                 }
             } catch (JSONException error) {}
         }

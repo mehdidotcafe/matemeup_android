@@ -14,6 +14,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.gson.JsonObject;
+import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.Date;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.containers.Quad;
@@ -151,7 +152,7 @@ public class RegisterActivity extends AccountModifierLayout {
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
-                return (Boolean) value;
+                return true;
             }
         }, "accept_cgu"));
         fieldsId.add(new Quad(R.id.gender_spinner, new ValueGetter() {
@@ -206,12 +207,15 @@ public class RegisterActivity extends AccountModifierLayout {
         if ((obj = validateFields(fieldsId)) == null) {
         }
         else {
-            Request req = (new Request()
+            final Request req = Request.getInstance();
+
+            Callback cb = new Callback()
             {
                 @Override
-                public void success(JSONObject data)
+                public void success(Object objData)
                 {
                     String token;
+                    JSONObject data = (JSONObject)objData;
 
                     try {
                         token = data.getString("token");
@@ -220,7 +224,7 @@ public class RegisterActivity extends AccountModifierLayout {
                     }
 
                     JWT.putAPI(RegisterActivity.this, token);
-                    Request.addQueryString("token", token);
+                    req.addQueryString("token", token);
                     goToHome();
                 }
 
@@ -230,9 +234,9 @@ public class RegisterActivity extends AccountModifierLayout {
                     System.out.println("Dans le fail");
                     System.out.println(error);
                 }
-            });
+            };
 
-            req.send(this, "register", "POST", null, obj);
+            req.send(this, "register", "POST", null, obj, cb);
         }
     }
 

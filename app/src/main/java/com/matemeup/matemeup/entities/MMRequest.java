@@ -22,12 +22,12 @@ public class MMRequest extends Request {
         super.sendFile(ctx, route, pathname, obj);
     }
 
-    public void send(Context ctx, String route, String method, JSONObject body) {
+    public void send(Context ctx, String route, String method, JSONObject body, Callback cb) {
         JSONObject obj = new JSONObject();
 
         try {
             obj.put("token", JWT.getMM(ctx));
         } catch (JSONException e) {}
-        super.send(ctx, route, method, obj, body);
+        super.send(ctx, route, method, obj, body, cb);
     }
 }

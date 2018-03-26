@@ -8,4 +8,8 @@ public class Callback {
     public void fail(int error) {
 
     }
+
+    public void fail(String error) {
+
+    }
 }

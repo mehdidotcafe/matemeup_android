@@ -48,10 +48,12 @@ public class FriendsActivity extends BackToolbarActivity {
             public void success(Object obj) {
                 pendings.remove(obj);
                 pendingAdapter.notifyDataSetChanged();
+                decrFriendNotifCount();
             }
         }, new Callback() {
             @Override
             public void success(Object obj) {
+                decrFriendNotifCount();
                 pendings.remove(obj);
                 pendingAdapter.notifyDataSetChanged();
             }
@@ -67,12 +69,25 @@ public class FriendsActivity extends BackToolbarActivity {
     }
 
 
+    private Boolean userNotInList(List<UserChat> list, UserChat user) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).id == user.id)
+                return false;
+        }
+        return true;
+    }
+
     private void getFriends() {
         ws.emit("friend.accepted.get", new JSONObject(), new WebSocketCallback()
         {
             public void onMessage(final String message, final Object... args)
             {
-                friends.addAll(UserChat.fromJson((JSONArray)args[0]));
+                List<UserChat> nfriends = UserChat.fromJson((JSONArray)args[0]);
+
+                for (int i= 0; i < nfriends.size(); i++) {
+                    if (userNotInList(friends, nfriends.get(i)))
+                        friends.add(nfriends.get(i));
+                }
                 renderFriends();
             }
         });
@@ -83,7 +98,12 @@ public class FriendsActivity extends BackToolbarActivity {
         {
             public void onMessage(final String message, final Object... args)
             {
-                pendings.addAll(UserChat.fromJson((JSONArray)args[0]));
+                List<UserChat> npendings = UserChat.fromJson((JSONArray)args[0]);
+
+                for (int i = 0; i < npendings.size(); i++) {
+                    if (userNotInList(pendings, npendings.get(i)))
+                        pendings.add(npendings.get(i));
+                }
                 renderPendings();
             }
         });
@@ -95,6 +115,7 @@ public class FriendsActivity extends BackToolbarActivity {
         ws.on("friend.accept.new", new WebSocketCallback() {
             @Override
             public void onMessage(String message, Object... args) {
+                System.out.println(args[0]);
                 friends.add(new UserChat((JSONObject)args[0]));
                 friendAdapter.notifyItemInserted(friends.size() - 1);
             }
@@ -137,7 +158,6 @@ public class FriendsActivity extends BackToolbarActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(args[0]);
                 }
             });
         }
@@ -168,6 +188,7 @@ public class FriendsActivity extends BackToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_friends);
 
+        IntentManager.setCurrentActivity(FriendsActivity.class);
         friends = new ArrayList<UserChat>();
         pendings = new ArrayList<UserChat>();
         initSocket();

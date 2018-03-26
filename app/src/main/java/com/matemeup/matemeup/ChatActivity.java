@@ -1,20 +1,17 @@
 package com.matemeup.matemeup;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 
 import com.matemeup.matemeup.adapters.HistoryChatAdapter;
 import com.matemeup.matemeup.entities.BitmapGetter;
+import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.model.HistoryChat;
 import com.matemeup.matemeup.entities.model.UserChat;
@@ -26,23 +23,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
 
 public class ChatActivity extends UserToolbarActivity {
-    private UserChat user;
+    private static UserChat user;
     private WebSocket ws;
-    private String getURL = "global.chat.user.normal.history";
+    private String getNormalURL = "global.chat.user.normal.history";
+    private String getInvitationURL = "global.chat.user.invitation.history";
     private String sendURL = "global.chat";
+    private String seenURL = "global.chat.message.seen";
     private static final int CHUNK_SIZE = 30;
     private static int index = 0;
     private HistoryChatAdapter adapter = null;
     private ArrayList<HistoryChat> list = new ArrayList();
     private int SCROLL_CEIL = 30;
     private Boolean isRequesting = false;
+    private Boolean isInvitation = false;
 
     private void sendText(String text) {
         JSONObject obj = new JSONObject();
@@ -53,8 +51,11 @@ public class ChatActivity extends UserToolbarActivity {
             obj.put("message", text);
         } catch (JSONException e) {return ;}
 
-
         ws.emit(sendURL, obj, null);
+    }
+
+    public static UserChat getUser() {
+        return user;
     }
 
     public void sendImage(String image) {
@@ -99,7 +100,6 @@ public class ChatActivity extends UserToolbarActivity {
 
     private void renderMessages(JSONObject data, Boolean goToBottom) throws JSONException {
         JSONArray messages;
-        int startIndex = list.size();
 
         try {
             messages = new JSONArray(data.getString("history"));
@@ -114,7 +114,7 @@ public class ChatActivity extends UserToolbarActivity {
         }
         adapter.notifyItemRangeInserted(0, messages.length());
 
-        if (goToBottom == true)
+        if (goToBottom)
         {
             if (list.size() > 0)
                 ((RecyclerView)findViewById(R.id.message_list)).smoothScrollToPosition(list.size() - 1);
@@ -122,7 +122,20 @@ public class ChatActivity extends UserToolbarActivity {
         isRequesting = false;
     }
 
+    private void sendSeenRequest() {
+        JSONObject obj = new JSONObject();
+
+        try {
+            obj.put("userId", user.id);
+            ws.emit(seenURL, obj, null);
+        } catch (JSONException e) {}
+    }
+
     private void getChunk(final Boolean goToBottom) {
+        getChunk(goToBottom, false);
+    }
+
+    private void getChunk(final Boolean goToBottom, final Boolean sendSeen) {
         JSONObject obj = new JSONObject();
 
         try {
@@ -131,13 +144,16 @@ public class ChatActivity extends UserToolbarActivity {
             obj.put("index", index);
         } catch (JSONException e) {}
 
-        ws.emit(getURL, obj, new WebSocketCallback()
+        ws.emit(isInvitation ? getInvitationURL : getNormalURL, obj, new WebSocketCallback()
         {
             public void onMessage(final String message, final Object... args)
             {
                 JSONObject messages = (JSONObject)args[0];
                 try {
                     renderMessages(messages, goToBottom);
+                    if (sendSeen) {
+                        sendSeenRequest();
+                    }
                 } catch (JSONException e) {}
             }
         });
@@ -149,6 +165,8 @@ public class ChatActivity extends UserToolbarActivity {
         list.add(message);
         adapter.notifyItemInserted(list.size() - 1);
         rv.smoothScrollToPosition(list.size() - 1);
+        if (IntentManager.getCurrentActivity() == ChatActivity.class)
+            sendSeenRequest();
     }
 
     private void initSocket() {
@@ -156,8 +174,10 @@ public class ChatActivity extends UserToolbarActivity {
         ws.on("global.chat.new", new WebSocketCallback() {
             @Override
             public void onMessage(final String message, final Object... args) {
+                System.out.println("new message " + args[0]);
                 HistoryChat msg = new HistoryChat((JSONObject)args[0]);
-                onNewMessage(msg);
+                if (msg.senderUserId == user.id || msg.receiverUserId == user.id)
+                    onNewMessage(msg);
             }
         });
     }
@@ -166,7 +186,7 @@ public class ChatActivity extends UserToolbarActivity {
         View imageButton = findViewById(R.id.send_image_button);
         View textButton = findViewById(R.id.send_text_button);
 
-        if (isVisible == true)
+        if (isVisible)
         {
             textButton.setVisibility(View.VISIBLE);
             imageButton.setVisibility(View.INVISIBLE);
@@ -178,13 +198,20 @@ public class ChatActivity extends UserToolbarActivity {
         }
     }
 
-    private void getUser() {
-        user = new UserChat(Serializer.unserialize(getIntent().getStringExtra("params")));
-        setUser(user);
+    private void setDataFromIntent() {
+        JSONObject obj = Serializer.unserialize(getIntent().getStringExtra("params"));
+
+        try {
+            user = new UserChat(obj.getJSONObject("user"));
+            setUser(user);
+            isInvitation = obj.getBoolean("isInvitation");
+        } catch (JSONException e) {
+            isInvitation = false;
+        }
     }
 
     private void setMessageInputListener() {
-        EditText input = (EditText)findViewById(R.id.chat_input);
+        EditText input =  (EditText)findViewById(R.id.chat_input);
         input.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -226,12 +253,20 @@ public class ChatActivity extends UserToolbarActivity {
 
                     int percentage = (int)(100.0 * offset / (float)(range - extent));
 
-                    if (percentage <= SCROLL_CEIL && isRequesting == false) {
+                    if (percentage <= SCROLL_CEIL && !isRequesting) {
                         getChunk(false);
                     }
                 }
             }
         });
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentManager.setCurrentActivity(ChatActivity.class);
+        sendSeenRequest();
     }
 
     @Override
@@ -241,10 +276,9 @@ public class ChatActivity extends UserToolbarActivity {
         list = new ArrayList();
         isRequesting = false;
         setMessageInputListener();
-        getUser();
+        setDataFromIntent();
         initList();
         initSocket();
-        getChunk(true);
-        System.out.println("HELLO GUYS");
+        getChunk(true, false);
     }
 }

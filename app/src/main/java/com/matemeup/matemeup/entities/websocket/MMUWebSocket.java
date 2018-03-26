@@ -2,7 +2,10 @@ package com.matemeup.matemeup.entities.websocket;
 
 import android.app.Activity;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.google.gson.JsonObject;
+import com.matemeup.matemeup.entities.Callback;
+import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.containers.Triple;
 
@@ -13,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MMUWebSocket extends WebSocket {
-    private static final String URL = "http://192.168.0.100:8011/";
+    private static final String URL = "http://192.168.0.104:8888/";
     private static final String EHLO = "ehlo";
     private static Boolean isInit = false;
     private static Boolean hasReceiveEhlo = false;
@@ -27,12 +30,15 @@ public class MMUWebSocket extends WebSocket {
        instances.add(this);
        if (isInit == false)
        {
+           Request req = Request.getInstance();
+
            isInit = true;
-           Request req = new Request()
+           Callback cb = new Callback()
            {
                @Override
-               public void success(JSONObject data)
+               public void success(Object objData)
                {
+                   JSONObject data = (JSONObject)objData;
                    String token;
 
                    try {
@@ -41,6 +47,7 @@ public class MMUWebSocket extends WebSocket {
                        token = "";
                    }
 
+                   System.out.println("dans success");
                    emit(EHLO, token, new WebSocketCallback() {
                        public void onMessage(String message, final Object... args) {
                            if (hasReceiveEhlo == false)
@@ -48,15 +55,22 @@ public class MMUWebSocket extends WebSocket {
                                if ((Boolean)args[0] == true)
                                {
                                    hasReceiveEhlo = true;
+                                   System.out.println("emit to all cached");
                                    emitToAllCached();
                                }
                            }
                        }
                    });
                }
+
+               @Override
+               public void fail(String error) {
+                   System.out.println("error getting mm token " + error);
+               }
            };
 
-           req.send(activity.getApplicationContext(), "matchmaker/token", "GET", null, null);
+           System.out.println("WebSocket init req");
+           req.send(activity.getApplicationContext(), "matchmaker/token", "GET", null, null, cb);
        }
     }
 
@@ -69,7 +83,6 @@ public class MMUWebSocket extends WebSocket {
 
     private void emitCached()
     {
-        System.out.println("emitCached header " + this);
         for (int i = 0; i < cachedEmit.size(); i++)
         {
             emit(cachedEmit.get(i).first, cachedEmit.get(i).second, cachedEmit.get(i).third);
@@ -78,17 +91,16 @@ public class MMUWebSocket extends WebSocket {
     }
 
     @Override
-    public void emit(String message, Object data, WebSocketCallback callback)
+    public Emitter.Listener emit(String message, Object data, WebSocketCallback callback)
     {
         if (hasReceiveEhlo == false && !message.equals(EHLO))
         {
-            System.out.println("Caching " + message);
             cachedEmit.add(new Triple(message, data, callback));
+            return null;
         }
         else
         {
-            System.out.println("emitting " + message);
-            super.emit(message, data, callback);
+            return super.emit(message, data, callback);
         }
     }
 }

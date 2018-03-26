@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
+import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.IntentManager;
@@ -32,10 +33,12 @@ public class ForgotPasswordActivity extends BackToolbarActivity {
             try {
                 toSend.put("email", mail);
             } catch (JSONException e) { return ;}
-            Request req = (new Request()
+            Request req = Request.getInstance();
+
+            Callback cb = new Callback()
             {
                 @Override
-                public void success(JSONObject data)
+                public void success(Object data)
                 {
                     goToLogin();
                 }
@@ -46,9 +49,9 @@ public class ForgotPasswordActivity extends BackToolbarActivity {
                     System.out.println("Dans le fail");
                     System.out.println(error);
                 }
-            });
+            };
 
-            req.send(this, "recover", "POST", null, toSend);
+            req.send(this, "recover", "POST", null, toSend, cb);
         }
         else
             System.out.println("Invalid Mail");
