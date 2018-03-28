@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MMUWebSocket extends WebSocket {
-    private static final String URL = "http://192.168.0.104:8888/";
+    private static final String URL = "http://192.168.0.103:8888/";
     private static final String EHLO = "ehlo";
     private static Boolean isInit = false;
     private static Boolean hasReceiveEhlo = false;
