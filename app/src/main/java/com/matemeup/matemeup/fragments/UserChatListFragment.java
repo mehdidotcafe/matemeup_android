@@ -143,7 +143,7 @@ public class UserChatListFragment extends Fragment {
 
     public void initSocket()
     {
-        ws = new MMUWebSocket(getActivity());
+        ws = MMUWebSocket.getInstance(getActivity());
     }
 
     public void onCreate(Bundle savedInstanceState, Boolean isInvitation) {
@@ -173,6 +173,7 @@ public class UserChatListFragment extends Fragment {
             @Override
             public void onMessage(final String message, final Object... args)
             {
+                System.out.println("FRAGMENT MESSAGE " + message + " " + args[0]);
                 JSONArray users = (JSONArray)args[0];
                 if (getActivity() != null)
                 {

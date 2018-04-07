@@ -29,7 +29,10 @@ dependencies {
     // https://mvnrepository.com/artifact/com.koushikdutta.ion/ion
     implementation group: 'com.koushikdutta.ion', name: 'ion', version: '2.1.6'
     implementation 'com.google.android.gms:play-services-places:11.8.0'
-    implementation 'com.github.nkzawa:socket.io-client:0.3.0'
+    compile ('io.socket:socket.io-client:1.0.0') {
+        // excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
     implementation 'com.android.support:design:24.2.1'
     implementation 'com.android.support:recyclerview-v7:23.1.0'
 }

@@ -15,6 +15,7 @@ import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.model.HistoryChat;
 import com.matemeup.matemeup.entities.model.UserChat;
+import com.matemeup.matemeup.entities.navigation.UserToolbar;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocketCallback;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 
 import static android.widget.AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL;
 
-public class ChatActivity extends UserToolbarActivity {
+public class ChatActivity extends Layout {
     private static UserChat user;
     private WebSocket ws;
     private String getNormalURL = "global.chat.user.normal.history";
@@ -170,7 +171,7 @@ public class ChatActivity extends UserToolbarActivity {
     }
 
     private void initSocket() {
-        ws = new MMUWebSocket(this);
+        ws = MMUWebSocket.getInstance(this);
         ws.on("global.chat.new", new WebSocketCallback() {
             @Override
             public void onMessage(final String message, final Object... args) {
@@ -202,7 +203,7 @@ public class ChatActivity extends UserToolbarActivity {
 
         try {
             user = new UserChat(obj.getJSONObject("user"));
-            setUser(user);
+            UserToolbar.handle(this, user);
             isInvitation = obj.getBoolean("isInvitation");
         } catch (JSONException e) {
             isInvitation = false;

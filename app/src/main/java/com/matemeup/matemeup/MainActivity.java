@@ -8,29 +8,28 @@ import android.view.View;
 
 import com.google.gson.JsonObject;
 import com.matemeup.matemeup.entities.Callback;
+import com.matemeup.matemeup.entities.ConnectedUser;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocket;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private void checkJWT()
     {
         String jwt = JWT.getAPI(this);
-
-        Request req = Request.getInstance();
-        if (jwt != null && !jwt.equals(""))
-        {
-            req.addQueryString("token", jwt);
-        }
         Callback cb = new Callback()
         {
             @Override
             public void success(Object data)
             {
+                try {
+                    ConnectedUser.set(((JSONObject)data).getJSONObject("user"));
+                } catch (JSONException e) {}
                 goToHome();
             }
 
@@ -53,7 +52,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        req.send(this, "me", "GET", null, null, cb);
+        Request req = Request.getInstance();
+        if (jwt != null && !jwt.equals(""))
+        {
+            req.addQueryString("token", jwt);
+            req.send(this, "me", "GET", null, null, cb);
+        }
+        else {
+            cb.fail("noJWT");
+        }
+
     }
 
     @Override

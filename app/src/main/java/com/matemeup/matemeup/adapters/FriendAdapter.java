@@ -35,7 +35,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         context = ctx;
         friends = f;
         textViewResourceId = tvri;
-        ws = new MMUWebSocket((Activity) context);
+        ws = MMUWebSocket.getInstance((Activity) context);
     }
     @Override
     public int getItemCount() {

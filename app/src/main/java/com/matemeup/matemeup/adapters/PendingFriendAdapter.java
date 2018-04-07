@@ -34,7 +34,7 @@ public class PendingFriendAdapter extends RecyclerView.Adapter<PendingFriendAdap
         context = ctx;
         pendings = p;
         textViewResourceId = tvri;
-        ws = new MMUWebSocket((Activity) context);
+        ws = MMUWebSocket.getInstance((Activity) context);
         acceptCallback = acceptCb;
         refuseCallback = refuseCb;
     }

@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.nkzawa.emitter.Emitter;
 import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.model.HistoryChat;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
@@ -17,6 +16,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.socket.emitter.Emitter;
+
 
 public class Layout extends AppCompatActivity {
 
@@ -115,7 +117,7 @@ public class Layout extends AppCompatActivity {
 
         final Layout self = this;
         if (initSocket) {
-            ws = new MMUWebSocket(this);
+            ws = MMUWebSocket.getInstance(this);
 
             friendCallback = new WebSocketCallback() {
                 @Override

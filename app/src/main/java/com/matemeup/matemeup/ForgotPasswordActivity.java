@@ -1,21 +1,20 @@
 package com.matemeup.matemeup;
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
 import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.IntentManager;
+import com.matemeup.matemeup.entities.navigation.BackButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class ForgotPasswordActivity extends BackToolbarActivity {
+public class ForgotPasswordActivity extends AppCompatActivity {
 
     public void goToLogin()
     {
@@ -59,6 +58,8 @@ public class ForgotPasswordActivity extends BackToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_forgot_password);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_forgot_password);
+        BackButton.handle(this);
     }
 }

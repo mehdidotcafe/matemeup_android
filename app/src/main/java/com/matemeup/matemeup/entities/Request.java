@@ -16,7 +16,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Request {
-    protected String BASE_URL = "http://192.168.0.103:8000/api/";
+    protected String BASE_URL = "https://beta.matemeup.com/api/";
+    //protected String BASE_URL = "http://192.168.0.103:8000/api/";
     private  Map<String, String> urlParams = new HashMap();
     private static Request instance = null;
 

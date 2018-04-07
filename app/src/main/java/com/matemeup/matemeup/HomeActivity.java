@@ -82,7 +82,7 @@ public class HomeActivity extends SearchToolbarActivity {
 
 
     private void initSocket() {
-        ws = new MMUWebSocket(this);
+        ws = MMUWebSocket.getInstance(this);
     }
 
     private void initTabs() {

@@ -10,11 +10,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.matemeup.matemeup.entities.Callback;
+import com.matemeup.matemeup.entities.ConnectedUser;
 import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.containers.Quad;
+import com.matemeup.matemeup.entities.validation.AccountModifier;
 import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
+import com.matemeup.matemeup.entities.validation.ValueGetter;
+import com.matemeup.matemeup.entities.validation.ValueValidation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,19 +31,21 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProfileActivity extends AccountModifierLayout {
+public class ProfileActivity extends Layout {
+
+    private AccountModifier accountModifier;
 
     @SuppressWarnings("unchecked")
     public void submitModif(View view) {
-        List<Quad<Integer, ValueGetter, RegisterActivity.ValueValidation, String>> fieldsId = new ArrayList();
+        List<Quad<Integer, ValueGetter, ValueValidation, String>> fieldsId = new ArrayList();
         JSONObject obj;
 
         fieldsId.add(new Quad(R.id.firstname_input, new ValueGetter() {
             public Object get(View _view) {
                 //return "toto";
-                return getFromString(_view);
+                return AccountModifier.getFromString(_view);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return Validator.validateString((String) value);
             }
@@ -47,27 +53,27 @@ public class ProfileActivity extends AccountModifierLayout {
         fieldsId.add(new Quad(R.id.lastname_input, new ValueGetter() {
             public Object get(View _view) {
                 //return "toto";
-                return getFromString(_view);
+                return AccountModifier.getFromString(_view);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return Validator.validateString((String) value);
             }
         }, "lastname"));
         fieldsId.add(new Quad(R.id.password_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return AccountModifier.getFromString(_view);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return value.toString().length() == 0 || Validator.validateString((String) value);
             }
         }, "password"));
         fieldsId.add(new Quad(R.id.conf_password_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return AccountModifier.getFromString(_view);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return value.toString().length() == 0 || Validator.validateString((String) value);
             }
@@ -75,7 +81,7 @@ public class ProfileActivity extends AccountModifierLayout {
         fieldsId.add(new Quad(R.id.place_autocomplete_fragment, new ValueGetter() {
             public Object get(View _view) {
                 //return "Paris, France";
-                return placeAddress;
+                return accountModifier.getPlaceAddress();
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -86,11 +92,11 @@ public class ProfileActivity extends AccountModifierLayout {
             public Object get(View _view) {
                 Calendar cal = Calendar.getInstance();
 
-                cal.setTime(birthdate);
+                cal.setTime(accountModifier.getBirthdate());
                 //return 1990;
                 return cal.get(Calendar.YEAR);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -99,11 +105,11 @@ public class ProfileActivity extends AccountModifierLayout {
             public Object get(View _view) {
                 Calendar cal = Calendar.getInstance();
 
-                cal.setTime(birthdate);
+                cal.setTime(accountModifier.getBirthdate());
                 //return 2;
                 return cal.get(Calendar.MONTH) + 1;
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -112,11 +118,11 @@ public class ProfileActivity extends AccountModifierLayout {
             public Object get(View _view) {
                 Calendar cal = Calendar.getInstance();
 
-                cal.setTime(birthdate);
+                cal.setTime(accountModifier.getBirthdate());
                 //return 1;
                 return cal.get(Calendar.DAY_OF_MONTH);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -124,9 +130,9 @@ public class ProfileActivity extends AccountModifierLayout {
         fieldsId.add(new Quad(R.id.gender_spinner, new ValueGetter() {
             public Object get(View _view) {
                 //return 1;
-                return getFromGender(_view);
+                return AccountModifier.getFromGender(_view);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -134,69 +140,58 @@ public class ProfileActivity extends AccountModifierLayout {
         fieldsId.add(new Quad(R.id.chat_visibility_input, new ValueGetter() {
             public Object get(View _view) {
                 //return 1;
-                return getFromBoolean(_view);
+                return AccountModifier.getFromBoolean(_view);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
         }, "open_chat_disabled"));
 
-        if ((obj = validateFields(fieldsId)) == null) {
+        if ((obj = accountModifier.validateFields(fieldsId)) == null) {
             System.out.println("Error validating form");
         }
         else {
             Request req = Request.getInstance();
-            Callback cb = new Callback();
+            Callback cb = new Callback() {
+                @Override
+                public void success(Object obj) {
+                    JSONObject data = (JSONObject)obj;
+
+                    try {
+                        ConnectedUser.set(data.getJSONObject("user"));
+                    } catch (JSONException e) {}
+                }
+            };
 
             req.send(this, "update", "POST", null, obj, cb);
         }
 
     }
 
-    private void updateLayoutFromUser(JSONObject user)
+    private void updateLayoutFromUser(ConnectedUser user)
     {
+        ((EditText) findViewById(R.id.firstname_input)).setText(user.firstname);
+        ((EditText) findViewById(R.id.lastname_input)).setText(user.lastname);
+        AvatarRemoteImageLoader.load((ImageView)findViewById(R.id.avatar_container), user.avatar);
         try {
-            ((EditText) findViewById(R.id.firstname_input)).setText(user.getString("firstname"));
-            ((EditText) findViewById(R.id.lastname_input)).setText(user.getString("lastname"));
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                birthdate = format.parse(user.getString("birthdate"));
-                DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
-                ((TextView) findViewById(R.id.birthdate_input)).setText(df.format(birthdate));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            ((Switch) findViewById(R.id.chat_visibility_input)).setChecked(user.getInt("open_chat_disabled") == 1);
-
-            ((TextView)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(user.getString("location"));
-            placeAddress = user.getString("location");
-            stylizePlaceFragment();
-            ((TextView) findViewById(R.id.username_container)).setText(user.getString("name"));
-            ((Spinner) findViewById(R.id.gender_spinner)).setSelection(user.getInt("gender"));
-            findViewById(R.id.avatar_container).setClipToOutline(true);
-            AvatarRemoteImageLoader.load((ImageView)findViewById(R.id.avatar_container), user.getString("avatar"));
-        } catch (JSONException e) {}
-        findViewById(R.id.profile_container).setVisibility(View.VISIBLE);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            accountModifier.setBirthdate(format.parse(user.birthdate));
+            DateFormat df = DateFormat.getDateInstance(DateFormat.LONG);
+            ((TextView) findViewById(R.id.birthdate_input)).setText(df.format(accountModifier.getBirthdate())); }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ((Switch) findViewById(R.id.chat_visibility_input)).setChecked(user.isOpenChatDisabled);
+        accountModifier.setLocalisation(user.location);
+        accountModifier.stylizePlaceFragment();
+        ((TextView) findViewById(R.id.username_container)).setText(user.name);
+        ((Spinner) findViewById(R.id.gender_spinner)).setSelection(user.gender);
+        findViewById(R.id.avatar_container).setClipToOutline(true);
     }
 
     private void getUser() {
-        Request req = Request.getInstance();
-        Callback cb = new Callback()
-        {
-            public void success(Object data) {
-                JSONObject result = (JSONObject)data;
-                try {
-                    updateLayoutFromUser(result.getJSONObject("user"));
-                } catch (JSONException e) {}
-            }
-
-            public void fail(String res) {
-                System.out.println("fail" + res);
-            }
-        };
-
-        req.send(this, "me", "GET", null, null, cb);
+        updateLayoutFromUser(ConnectedUser.getInstance());
     }
 
     private void initToolbar() {
@@ -208,6 +203,7 @@ public class ProfileActivity extends AccountModifierLayout {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_profile);
         IntentManager.setCurrentActivity(ProfileActivity.class);
+        accountModifier = new AccountModifier(this);
         initToolbar();
         getUser();
     }

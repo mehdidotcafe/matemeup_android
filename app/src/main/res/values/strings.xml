@@ -21,7 +21,7 @@
     <string name="password">Mot de passe</string>
     <string name="connexion">Connection</string>
     <string name="forgot_password_q">Mot de passe oublié ?</string>
-    <string name="connect">Se conneceter</string>
+    <string name="connect">Se connecter</string>
     <string name="register">S\'inscrire</string>
     <string name="firstname">Prénom</string>
     <string name="lastname">Nom</string>

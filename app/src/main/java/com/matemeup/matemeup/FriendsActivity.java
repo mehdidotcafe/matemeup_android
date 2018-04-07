@@ -14,6 +14,7 @@ import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.model.UserChat;
+import com.matemeup.matemeup.entities.navigation.BackButton;
 import com.matemeup.matemeup.entities.rendering.Alert;
 import com.matemeup.matemeup.entities.rendering.AlertCallback;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsActivity extends BackToolbarActivity {
+public class FriendsActivity extends Layout{
     private WebSocket ws;
     private PendingFriendAdapter pendingAdapter;
     private FriendAdapter friendAdapter;
@@ -110,7 +111,7 @@ public class FriendsActivity extends BackToolbarActivity {
     }
 
     private void initSocket() {
-        ws = new MMUWebSocket(this);
+        ws = MMUWebSocket.getInstance(this);
 
         ws.on("friend.accept.new", new WebSocketCallback() {
             @Override
@@ -188,6 +189,7 @@ public class FriendsActivity extends BackToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_friends);
 
+        BackButton.handle(this);
         IntentManager.setCurrentActivity(FriendsActivity.class);
         friends = new ArrayList<UserChat>();
         pendings = new ArrayList<UserChat>();

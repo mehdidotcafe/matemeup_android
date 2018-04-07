@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.http.body.JSONObjectBody;
 import com.matemeup.matemeup.entities.Callback;
+import com.matemeup.matemeup.entities.ConnectedUser;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
@@ -15,12 +16,12 @@ import com.matemeup.matemeup.entities.IntentManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends BackToolbarActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initSocket = false;
-        super.onCreate(savedInstanceState, R.layout.activity_login);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
     }
 
     public void goToHome()
@@ -62,8 +63,10 @@ public class LoginActivity extends BackToolbarActivity {
                 }
 
                 JWT.putAPI(LoginActivity.this, token);
-                System.out.println("got token " + JWT.getAPI(LoginActivity.this));
                 req.addQueryString("token", token);
+                try {
+                    ConnectedUser.set(data.getJSONObject("user"));
+                } catch (JSONException e) {}
                 goToHome();
             }
 

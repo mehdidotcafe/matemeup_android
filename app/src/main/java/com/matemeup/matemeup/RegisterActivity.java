@@ -1,28 +1,18 @@
 package com.matemeup.matemeup;
 
-import android.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.TextView;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.gson.JsonObject;
 import com.matemeup.matemeup.entities.Callback;
-import com.matemeup.matemeup.entities.Date;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.containers.Quad;
 import com.matemeup.matemeup.entities.Request;
-import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.IntentManager;
-import com.matemeup.matemeup.fragments.DatePickerFragment;
+import com.matemeup.matemeup.entities.validation.AccountModifier;
+import com.matemeup.matemeup.entities.validation.ValueGetter;
+import com.matemeup.matemeup.entities.validation.ValueValidation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +22,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class RegisterActivity extends AccountModifierLayout {
+public class RegisterActivity extends AppCompatActivity {
+
+    AccountModifier accountModifier;
 
     public void goToHome()
     {
@@ -47,7 +39,7 @@ public class RegisterActivity extends AccountModifierLayout {
 
         fieldsId.add(new Quad(R.id.name_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return accountModifier.getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -57,7 +49,7 @@ public class RegisterActivity extends AccountModifierLayout {
 
         fieldsId.add(new Quad(R.id.email_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return accountModifier.getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -66,7 +58,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "email"));
         fieldsId.add(new Quad(R.id.register_password_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return accountModifier.getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -75,7 +67,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "password"));
         fieldsId.add(new Quad(R.id.conf_password_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return accountModifier.getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -84,7 +76,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "password_confirmation"));
         fieldsId.add(new Quad(R.id.place_autocomplete_fragment, new ValueGetter() {
             public Object get(View _view) {
-                return placeAddress;
+                return accountModifier.getPlaceAddress();
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -93,7 +85,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "location"));
         fieldsId.add(new Quad(R.id.sponsor_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return accountModifier.getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -102,7 +94,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "parrain"));
         fieldsId.add(new Quad(R.id.firstname_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return accountModifier.getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -111,7 +103,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "firstname"));
         fieldsId.add(new Quad(R.id.lastname_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromString(_view);
+                return accountModifier.getFromString(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -120,7 +112,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "lastname"));
         fieldsId.add(new Quad(R.id.identity_visibility_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromBoolean(_view);
+                return accountModifier.getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -129,7 +121,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "showLastName"));
         fieldsId.add(new Quad(R.id.chat_visibility_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromBoolean(_view);
+                return accountModifier.getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -138,7 +130,7 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "allMP"));
         fieldsId.add(new Quad(R.id.accept_email_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromBoolean(_view);
+                return accountModifier.getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -148,7 +140,7 @@ public class RegisterActivity extends AccountModifierLayout {
 
         fieldsId.add(new Quad(R.id.accept_CGU_input, new ValueGetter() {
             public Object get(View _view) {
-                return getFromBoolean(_view);
+                return accountModifier.getFromBoolean(_view);
             }
         }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
@@ -157,9 +149,9 @@ public class RegisterActivity extends AccountModifierLayout {
         }, "accept_cgu"));
         fieldsId.add(new Quad(R.id.gender_spinner, new ValueGetter() {
             public Object get(View _view) {
-                return getFromGender(_view);
+                return accountModifier.getFromGender(_view);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -168,11 +160,11 @@ public class RegisterActivity extends AccountModifierLayout {
             public Object get(View _view) {
                 Calendar cal = Calendar.getInstance();
 
-                cal.setTime(birthdate);
+                cal.setTime(accountModifier.getBirthdate());
                 //return 1990;
                 return cal.get(Calendar.YEAR);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -181,11 +173,11 @@ public class RegisterActivity extends AccountModifierLayout {
             public Object get(View _view) {
                 Calendar cal = Calendar.getInstance();
 
-                cal.setTime(birthdate);
+                cal.setTime(accountModifier.getBirthdate());
                 //return 2;
                 return cal.get(Calendar.MONTH) + 1;
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
@@ -194,17 +186,17 @@ public class RegisterActivity extends AccountModifierLayout {
             public Object get(View _view) {
                 Calendar cal = Calendar.getInstance();
 
-                cal.setTime(birthdate);
+                cal.setTime(accountModifier.getBirthdate());
                 //return 1;
                 return cal.get(Calendar.DAY_OF_MONTH);
             }
-        }, new RegisterActivity.ValueValidation() {
+        }, new ValueValidation() {
             public Boolean validate(Object value, HashMap<String, Object> map) {
                 return true;
             }
         }, "bdday"));
 
-        if ((obj = validateFields(fieldsId)) == null) {
+        if ((obj = accountModifier.validateFields(fieldsId)) == null) {
         }
         else {
             final Request req = Request.getInstance();
@@ -242,7 +234,9 @@ public class RegisterActivity extends AccountModifierLayout {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_register);
-        stylizePlaceFragment(true);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        accountModifier = new AccountModifier(this);
+        accountModifier.stylizePlaceFragment(true);
     }
 }
