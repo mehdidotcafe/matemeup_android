@@ -16,10 +16,12 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:padding="1dp"
+            android:scaleType="centerCrop"
             android:background="@drawable/round_outline"
             android:id="@+id/useravatar_container"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

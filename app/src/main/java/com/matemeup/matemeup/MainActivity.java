@@ -14,6 +14,9 @@ import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocket;
+import com.onesignal.OSSubscriptionObserver;
+import com.onesignal.OSSubscriptionStateChanges;
+import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -30,31 +30,51 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="109dp"
+            android:layout_height="86dp"
             android:background="@drawable/backtitle"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="77dp">
 
             <ImageView
+                android:padding="1dp"
+                android:scaleType="centerCrop"
                 android:id="@+id/avatar_container"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="24dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="11dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="11dp"
                 android:background="@drawable/round_outline"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:fontFamily="sans-serif-condensed"
+                android:fontFamily="@font/montserra"
                 android:id="@+id/username_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/avatar_container"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/disconnect_button"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="25dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/round_outline_red"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.25"
+                app:srcCompat="@drawable/baseline_block_white_24" />
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
@@ -215,6 +235,7 @@
                     android:src="@drawable/ic_event_black_24dp" />
 
                 <TextView
+                    android:hint="@string/birthdate"
                     android:id="@+id/birthdate_input"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -304,14 +325,16 @@
             </LinearLayout>
 
             <Button
-                android:textColor="@color/colorButton"
-                android:background="@drawable/button_background_ripple"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserra"
                 android:id="@+id/submitmodification-button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="48dp"
+                android:layout_margin="32dp"
+                android:background="@drawable/button_background_ripple"
                 android:onClick="submitModif"
-                android:text="@string/update" />
+                android:text="@string/update"
+                android:textColor="@color/colorButton" />
 
 
         </LinearLayout>

@@ -28,7 +28,7 @@
                 android:layout_gravity="center"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_close_black_24dp" />
+                android:src="@drawable/baseline_close_white_24" />
         </RelativeLayout>
 
         <EditText

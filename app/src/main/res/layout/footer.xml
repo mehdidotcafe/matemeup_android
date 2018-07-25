@@ -11,10 +11,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="56dp">
 
         <LinearLayout
+            android:background="?attr/selectableItemBackground"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".33"
@@ -30,7 +32,7 @@
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
                     android:onClick="replaceChat"
-                    android:src="@drawable/ic_chat_black_24dp" />
+                    android:src="@drawable/ic_chat_white_24dp" />
                     <TextView
                         android:visibility="invisible"
                         android:background="@drawable/round_outline_red"
@@ -49,6 +51,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:background="?attr/selectableItemBackground"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".33"
@@ -60,11 +63,12 @@
                 android:layout_height="match_parent"
                 android:background="?attr/selectableItemBackground"
                 android:onClick="replaceProfile"
-                android:src="@drawable/ic_person_black_24dp" />
+                android:src="@drawable/ic_person_white_24dp" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:background="?attr/selectableItemBackground"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".33"
@@ -80,7 +84,7 @@
                     android:layout_height="match_parent"
                     android:background="?attr/selectableItemBackground"
                     android:onClick="replaceFriends"
-                    android:src="@drawable/ic_people_black_24dp" />
+                    android:src="@drawable/ic_people_white_24dp" />
                 <TextView
                     android:visibility="invisible"
                     android:background="@drawable/round_outline_red"

@@ -107,13 +107,12 @@ public class WebSocket {
 
     private Emitter.Listener onConnectError = new Emitter.Listener() {
         @Override
-        public void call(Object... args) {
-            System.out.println("SOCKET ERROR " + args[0]);
-
+        public void call(final Object... args) {
+            currentRequest.clear();
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(activity.getApplicationContext(), "Unable to connect to NodeJS server", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity.getApplicationContext(), "SOCKET ERROR " + args[0], Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -136,7 +135,6 @@ public class WebSocket {
 
             @Override
             public void call(final Object... args) {
-                System.out.println("WESOCKET Dans call");
                 currentRequest.remove(_msg);
                 final Emitter.Listener self = this;
                 activity.runOnUiThread(new Runnable() {
@@ -167,8 +165,8 @@ public class WebSocket {
                 currentRequest.add(msg);
             socket.emit(message, data);
         }
-        else
-            System.out.println("NOT EMITTING");
+        else {
+        }
 
         return cb;
     }

@@ -30,10 +30,10 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:layout_marginStart="8dp"
             android:id="@+id/chat_input"
-            android:layout_width="288dp"
+            android:layout_width="312dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
             android:hint="@string/say_something" />
 
         <RelativeLayout

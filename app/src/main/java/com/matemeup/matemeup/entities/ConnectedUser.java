@@ -20,6 +20,10 @@ public class ConnectedUser {
         return instance;
     }
 
+    public static void unset() {
+        instance = null;
+    }
+
     public static ConnectedUser getInstance(JSONObject user) {
         ConnectedUser newInstance = getInstance();
 
@@ -27,14 +31,13 @@ public class ConnectedUser {
             newInstance.name = user.getString("name");
             newInstance.avatar = user.getString("avatar");
             newInstance.birthdate = user.getString("birthdate");
-            newInstance.firstname = user.getString("firstname");
-            newInstance.lastname = user.getString("lastname");
-            newInstance.gender = user.getInt("gender");
-            newInstance.location = user.getString("location");
+            newInstance.firstname = user.isNull("firstname") ? "" : user.getString("firstname");
+            newInstance.lastname = user.isNull("lastname") ? "" : user.getString("lastname");
+            newInstance.gender = user.isNull("gender") ? 0 : user.getInt("gender");
+            newInstance.location = user.isNull("firstname") ? "" : user.getString("location");
             newInstance.isOpenChatDisabled = user.getInt("open_chat_disabled") == 1;
         } catch (JSONException e) {
-            System.out.println("ca throw ici");
-            System.out.println(e);
+            System.out.println(e.toString());
         }
         return newInstance;
     }

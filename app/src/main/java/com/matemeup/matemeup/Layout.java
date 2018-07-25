@@ -36,6 +36,11 @@ public class Layout extends AppCompatActivity {
         finish();
     }
 
+    public static void unsetNotif() {
+        chatNotifCount = new HashMap<>();
+        friendNotifCount = 0;
+    }
+
     private void renderNotifCount(TextView view, int count) {
         if (count == 0 && view.getVisibility() == View.VISIBLE) {
             view.setVisibility(View.INVISIBLE);
@@ -64,7 +69,6 @@ public class Layout extends AppCompatActivity {
 
     public void decrChatNotifCount(int userId) {
         chatNotifCount.remove(userId);
-        System.out.println(chatNotifCount);
         renderChatNotifCount();
     }
 
@@ -105,9 +109,10 @@ public class Layout extends AppCompatActivity {
     }
 
 
-    private boolean canShowChatNotif(int userId, Boolean isUser) {
+    private boolean canShowChatNotif(int senderId, int receiverId, Boolean isUser) {
+
         return (IntentManager.getCurrentActivity() != ChatActivity.class ||
-                ChatActivity.getUser().id != userId) && !isUser;
+                ChatActivity.getUser().id != receiverId && ChatActivity.getUser().id != senderId) && !isUser;
     }
 
     protected void onCreate(Bundle savedInstanceState, int activity)
@@ -132,10 +137,10 @@ public class Layout extends AppCompatActivity {
                 public void onMessage(String message, Object... args) {
                     HistoryChat msg = new HistoryChat((JSONObject)args[0]);
 
-                    if (canShowChatNotif(msg.senderUserId, msg.isUser)) {
+                    if (canShowChatNotif(msg.senderUserId, msg.receiverUserId, msg.isUser)) {
                         self.onNewChatMessage(msg);
                     }
-                    else
+                    else if (IntentManager.getCurrentActivity() == ChatActivity.class && msg.isUser == true)
                         self.onNewSelfChatMessage(msg);
 
                 }

@@ -13,6 +13,7 @@ import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.validation.AccountModifier;
 import com.matemeup.matemeup.entities.validation.ValueGetter;
 import com.matemeup.matemeup.entities.validation.ValueValidation;
+import com.matemeup.matemeup.fragments.DatePickerFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,9 +23,19 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements DatePickerFragment.OnDatePicked {
 
     AccountModifier accountModifier;
+
+    public void showBirthdatePicker(View view) {
+        accountModifier.showBirthdatePicker(view);
+    }
+
+
+    @Override
+    public void onDatePicked(int year, int month, int day) {
+        accountModifier.onDatePicked(year, month, day);
+    }
 
     public void goToHome()
     {

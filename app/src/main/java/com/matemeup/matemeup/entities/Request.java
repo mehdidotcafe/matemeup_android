@@ -16,8 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Request {
-    protected String BASE_URL = "https://beta.matemeup.com/api/";
-    //protected String BASE_URL = "http://192.168.0.103:8000/api/";
+    protected String BASE_URL = Constants.apiUrl;
     private  Map<String, String> urlParams = new HashMap();
     private static Request instance = null;
 
@@ -28,6 +27,10 @@ public class Request {
         return instance;
     }
 
+    public void unsetQueryString() {
+        urlParams = new HashMap();
+    }
+
     public void addQueryString(String key, String value)
     {
         urlParams.put(key, value);
@@ -36,26 +39,18 @@ public class Request {
 
     public void success(JSONObject result)
     {
-        System.out.println("successStr");
-        System.out.println(result);
     }
 
     public void fail(String result)
     {
-        System.out.println("errorStr");
-        System.out.println(result);
-
     }
 
     private String setDefaultUrlParams(String route, JSONObject obj)
     {
         Boolean isFirst = true;
 
-        System.out.println("urlParams " + urlParams);
-        for (Map.Entry<String, String> entry : urlParams.entrySet())
-        {
-            if (isFirst)
-            {
+        for (Map.Entry<String, String> entry : urlParams.entrySet()) {
+            if (isFirst) {
                 route += '?' ;
                 isFirst = false;
             }
@@ -67,8 +62,7 @@ public class Request {
         if (obj != null) {
             try {
                 for (int i = 0; i < obj.names().length(); i++) {
-                    if (isFirst)
-                    {
+                    if (isFirst) {
                         route += '?' ;
                         isFirst = false;
                     }
@@ -105,13 +99,12 @@ public class Request {
 
     public void sendFile(Context ctx, String route, String pathname, JSONObject queryString) {
         Ion.with(ctx)
-                .load( setDefaultUrlParams(BASE_URL + route, queryString))
+                .load(setDefaultUrlParams(BASE_URL + route, queryString))
                 .setMultipartFile("file", "application/octet", new File(pathname))
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-                        System.out.println("Success");
                         Boolean isSucceed = result != null && result.get("success") != null && result.get("success").getAsBoolean();
 
                         try {
@@ -142,7 +135,6 @@ public class Request {
             .setCallback(new FutureCallback<JsonObject>() {
         @Override
         public void onCompleted(Exception e, JsonObject result) {
-            System.out.println("result " + result);
             Boolean isSucceed = result != null && result.get("success") != null && result.get("success").getAsBoolean();
 
             try {

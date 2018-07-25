@@ -72,7 +72,6 @@ public class HistoryChatAdapter extends RecyclerView.Adapter<HistoryChatAdapter.
 
         public void display(HistoryChat h) {
             currentHistory = h;
-            System.out.println(currentHistory.message);
             int containerId = currentHistory.type == 1 ? R.id.message_container : R.id.message_image_container;
             int sizeInDP = 16;
 

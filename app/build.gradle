@@ -9,6 +9,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                onesignal_app_id: 'e882cfab-0d94-4b0c-b5ed-ab32e54530b0',
+                onesignal_google_project_number: 'REMOTE'
+        ]
     }
     buildTypes {
         release {
@@ -16,6 +20,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/'}
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.8.1'
+    }
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+repositories {
+    maven { url 'https://maven.google.com' }
 }
 
 dependencies {
@@ -29,10 +47,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.koushikdutta.ion/ion
     implementation group: 'com.koushikdutta.ion', name: 'ion', version: '2.1.6'
     implementation 'com.google.android.gms:play-services-places:11.8.0'
-    compile ('io.socket:socket.io-client:1.0.0') {
+    implementation ('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
     implementation 'com.android.support:design:24.2.1'
     implementation 'com.android.support:recyclerview-v7:23.1.0'
+    implementation 'com.onesignal:OneSignal:[3.8.3, 3.99.99]'
 }

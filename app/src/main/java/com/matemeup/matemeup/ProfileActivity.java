@@ -12,13 +12,17 @@ import android.widget.TextView;
 import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.ConnectedUser;
 import com.matemeup.matemeup.entities.IntentManager;
+import com.matemeup.matemeup.entities.Loginout;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.Validator;
 import com.matemeup.matemeup.entities.containers.Quad;
+import com.matemeup.matemeup.entities.rendering.Alert;
+import com.matemeup.matemeup.entities.rendering.AlertCallback;
 import com.matemeup.matemeup.entities.validation.AccountModifier;
 import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
 import com.matemeup.matemeup.entities.validation.ValueGetter;
 import com.matemeup.matemeup.entities.validation.ValueValidation;
+import com.matemeup.matemeup.fragments.DatePickerFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,9 +35,20 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class ProfileActivity extends Layout {
+public class ProfileActivity extends Layout implements DatePickerFragment.OnDatePicked {
 
     private AccountModifier accountModifier;
+    private ProfileActivity self = this;
+
+    public void showBirthdatePicker(View view) {
+        accountModifier.showBirthdatePicker(view);
+    }
+
+
+    @Override
+    public void onDatePicked(int year, int month, int day) {
+        accountModifier.onDatePicked(year, month, day);
+    }
 
     @SuppressWarnings("unchecked")
     public void submitModif(View view) {
@@ -158,6 +173,7 @@ public class ProfileActivity extends Layout {
                 public void success(Object obj) {
                     JSONObject data = (JSONObject)obj;
 
+                    Alert.ok(self, getResources().getString(R.string.update_sucess), getResources().getString(R.string.profile_updated), new AlertCallback());
                     try {
                         ConnectedUser.set(data.getJSONObject("user"));
                     } catch (JSONException e) {}
@@ -195,8 +211,19 @@ public class ProfileActivity extends Layout {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_back);
+        Toolbar toolbar = findViewById(R.id.toolbar_back);
         setSupportActionBar(toolbar);
+    }
+
+    private void setListeners() {
+        final ProfileActivity self = this;
+        this.findViewById(R.id.disconnect_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Loginout.logout(self);
+                IntentManager.goTo(self, MainActivity.class);
+            }
+        });
     }
 
     @Override
@@ -204,6 +231,7 @@ public class ProfileActivity extends Layout {
         super.onCreate(savedInstanceState, R.layout.activity_profile);
         IntentManager.setCurrentActivity(ProfileActivity.class);
         accountModifier = new AccountModifier(this);
+        setListeners();
         initToolbar();
         getUser();
     }

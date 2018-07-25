@@ -6,6 +6,8 @@
     android:orientation="horizontal"
     android:gravity="center">
     <ImageView
+        android:padding="1dp"
+        android:scaleType="centerCrop"
         android:background="@drawable/round_outline"
         android:id="@+id/avatar_container"
         android:layout_marginTop="4dp"

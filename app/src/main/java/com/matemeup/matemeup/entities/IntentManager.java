@@ -54,6 +54,7 @@ public class IntentManager {
                 android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
         packageContext.startActivity(intent, bundle);
         ((Activity)packageContext).finish();
+
     }
 
     public static void goToRet(Activity activity, Context packageContext, Class<?> cls) {

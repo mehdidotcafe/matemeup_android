@@ -6,6 +6,8 @@
     android:gravity="center"
     >
     <ImageView
+        android:padding="1dp"
+        android:scaleType="centerCrop"
         android:id="@+id/avatar_autocomplete_container"
         android:layout_width="48dp"
         android:layout_height="48dp" />

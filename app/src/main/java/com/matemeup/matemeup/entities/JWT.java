@@ -19,6 +19,12 @@ public class JWT extends Storage
         return token;
     }
 
+    public static String unsetAPI(Context ctx) {
+        JWT.put(ctx, API_KEY, null);
+
+        return "";
+    }
+
     public static String getMM(Context ctx)
     {
         return JWT.get(ctx, MM_KEY);
@@ -30,4 +36,11 @@ public class JWT extends Storage
 
         return token;
     }
+
+    public static String unsetMM(Context ctx) {
+        JWT.put(ctx, MM_KEY, null);
+
+        return "";
+    }
+
 }

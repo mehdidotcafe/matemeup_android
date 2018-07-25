@@ -28,7 +28,7 @@ public class BitmapGetter {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(ctx.getContentResolver(), uri);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
             try {
                 byte[] b = baos.toByteArray();
 

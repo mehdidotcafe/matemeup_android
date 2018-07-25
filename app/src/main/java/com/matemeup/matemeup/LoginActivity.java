@@ -9,9 +9,14 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.http.body.JSONObjectBody;
 import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.ConnectedUser;
+import com.matemeup.matemeup.entities.Loginout;
 import com.matemeup.matemeup.entities.Request;
 import com.matemeup.matemeup.entities.JWT;
 import com.matemeup.matemeup.entities.IntentManager;
+import com.matemeup.matemeup.entities.rendering.Alert;
+import com.matemeup.matemeup.entities.rendering.AlertCallback;
+import com.onesignal.OSPermissionSubscriptionState;
+import com.onesignal.OneSignal;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = ((TextView)findViewById(R.id.username_input)).getText().toString();
         String password = ((TextView)findViewById(R.id.login_password_input)).getText().toString();
         JSONObject loginObj = new JSONObject();
+        final LoginActivity self = this;
 
         try {
             loginObj.put("email", username);
@@ -48,33 +54,17 @@ public class LoginActivity extends AppCompatActivity {
 
         final Request req = Request.getInstance();
 
-        Callback cb = new Callback()
-        {
+        Callback cb = new Callback() {
             @Override
-            public void success(Object objData)
-            {
-                String token;
-                JSONObject data = (JSONObject)objData;
-
-                try {
-                    token = data.getString("token");
-                } catch (JSONException e) {
-                    token = "";
-                }
-
-                JWT.putAPI(LoginActivity.this, token);
-                req.addQueryString("token", token);
-                try {
-                    ConnectedUser.set(data.getJSONObject("user"));
-                } catch (JSONException e) {}
+            public void success(Object objData) {
+                Loginout.login(self, (JSONObject)objData);
                 goToHome();
             }
 
             @Override
-            public void fail(String error)
-            {
-                System.out.println("Dans le fail login");
+            public void fail(String error) {
                 System.out.println(error);
+                Alert.ok(self, getResources().getString(R.string.connect_error), getResources().getString(R.string.email_password_invalid), new AlertCallback());
             }
         };
 

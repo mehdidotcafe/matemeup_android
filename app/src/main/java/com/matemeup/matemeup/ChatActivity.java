@@ -15,6 +15,7 @@ import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.model.HistoryChat;
 import com.matemeup.matemeup.entities.model.UserChat;
+import com.matemeup.matemeup.entities.navigation.BackButton;
 import com.matemeup.matemeup.entities.navigation.UserToolbar;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocket;
@@ -76,7 +77,7 @@ public class ChatActivity extends Layout {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            String image = BitmapGetter.get(this, data, 10 * 1000);
+            String image = BitmapGetter.get(this, data, 1000);
             sendImage(image);
 
         }
@@ -186,8 +187,7 @@ public class ChatActivity extends Layout {
         View imageButton = findViewById(R.id.send_image_button);
         View textButton = findViewById(R.id.send_text_button);
 
-        if (isVisible)
-        {
+        if (isVisible) {
             textButton.setVisibility(View.VISIBLE);
             imageButton.setVisibility(View.INVISIBLE);
         }
@@ -234,7 +234,7 @@ public class ChatActivity extends Layout {
     }
 
     private void initList(){
-        final RecyclerView fl = (RecyclerView)findViewById(R.id.message_list);
+        final RecyclerView fl = findViewById(R.id.message_list);
 
         adapter = new HistoryChatAdapter(this, R.layout.item_chat_text_history, R.layout.item_chat_image_history, list, user.id);
         fl.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -275,6 +275,7 @@ public class ChatActivity extends Layout {
         index = 0;
         list = new ArrayList();
         isRequesting = false;
+        BackButton.handle(this);
         setMessageInputListener();
         setDataFromIntent();
         initList();

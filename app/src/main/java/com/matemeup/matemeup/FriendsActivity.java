@@ -116,7 +116,6 @@ public class FriendsActivity extends Layout{
         ws.on("friend.accept.new", new WebSocketCallback() {
             @Override
             public void onMessage(String message, Object... args) {
-                System.out.println(args[0]);
                 friends.add(new UserChat((JSONObject)args[0]));
                 friendAdapter.notifyItemInserted(friends.size() - 1);
             }
@@ -154,7 +153,6 @@ public class FriendsActivity extends Layout{
                     JSONObject resp = (JSONObject)args[0];
 
                     try {
-                        System.out.println(resp.getBoolean("state"));
                         Alert.ok(self, getResources().getString(R.string.add_friend), resp.getBoolean("state") ? getResources().getString(R.string.friend_invitation_sent) : getResources().getString(R.string.user_already_friend), new AlertCallback() {});
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -189,7 +187,6 @@ public class FriendsActivity extends Layout{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState, R.layout.activity_friends);
 
-        BackButton.handle(this);
         IntentManager.setCurrentActivity(FriendsActivity.class);
         friends = new ArrayList<UserChat>();
         pendings = new ArrayList<UserChat>();

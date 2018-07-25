@@ -9,8 +9,8 @@
     <string name="ok">OK</string>
     <string name="select_picture">Choissisez une image</string>
     <string name="add_friend">Ajout d\'un ami</string>
-    <string name="friend_invitation_sent">Demande d\'ami envoyée</string>
-    <string name="user_already_friend">Vous avez deja cette personne en ami</string>
+    <string name="friend_invitation_sent">Demande d\'ami envoyée.</string>
+    <string name="user_already_friend">Vous avez deja cette personne en ami.</string>
     <string name="say_something">Exprimez-vous</string>
     <string name="email">Email</string>
     <string name="confirm">Valider</string>
@@ -19,7 +19,7 @@
     <string name="your_friends">Vos amis</string>
     <string name="username">Nom d\'utilisateur</string>
     <string name="password">Mot de passe</string>
-    <string name="connexion">Connection</string>
+    <string name="connexion">Connexion</string>
     <string name="forgot_password_q">Mot de passe oublié ?</string>
     <string name="connect">Se connecter</string>
     <string name="register">S\'inscrire</string>
@@ -30,14 +30,19 @@
     <string name="location">Location</string>
     <string name="gender">Sexe</string>
     <string name="visibility">Visibilité</string>
-    <string name="allow_contact_me_by_mp">Permettre à tous de me contacter en message privés</string>
+    <string name="allow_contact_me_by_mp">Permettre à tous de me contacter en message privés.</string>
     <string name="update">Mettre a jour</string>
     <string name="pseudo">Pseudonyme</string>
     <string name="godparent">Parrain</string>
     <string name="show_my_name">Montrer mon nom publiquement</string>
-    <string name="accept_receive_email_from_mmu">J\'accepte de recevoir des e-mails de MateMeUp</string>
+    <string name="accept_receive_email_from_mmu">J\'accepte de recevoir des e-mails de MateMeUp.</string>
     <string name="accept_cgu">J\'accepte les CGU</string>
     <string name="search">Rechercher</string>
+    <string name="choose_birthdate">Choisir une date de naissance</string>
+    <string name="connect_error">Erreur lors de la connexion.</string>
+    <string name="email_password_invalid">Adresse mail ou mot de passe invalide.</string>
+    <string name="update_sucess">Mise à jour avec succès</string>
+    <string name="profile_updated">Votre profil a été mis à jour.</string>
     <string-array name="genders_array">
         <item>Homme</item>
         <item>Femme</item>

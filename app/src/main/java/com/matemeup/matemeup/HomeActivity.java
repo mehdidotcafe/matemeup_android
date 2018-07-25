@@ -14,7 +14,6 @@ import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.IntentManager;
 import com.matemeup.matemeup.entities.Serializer;
 import com.matemeup.matemeup.entities.model.HistoryChat;
-import com.matemeup.matemeup.entities.model.UserChat;
 import com.matemeup.matemeup.entities.model.UserChatNotif;
 import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
 import com.matemeup.matemeup.entities.websocket.WebSocket;
@@ -65,7 +64,7 @@ public class HomeActivity extends SearchToolbarActivity {
     }
 
     @Override
-    public void onTextChange(String needle) {
+    public void onTextChange(final String needle) {
         String[] msgs = {"global.chat.user.normal.get", "global.invitation.user.normal.get"};
         JSONObject obj = new JSONObject();
 
@@ -74,7 +73,9 @@ public class HomeActivity extends SearchToolbarActivity {
             ws.emit(msgs[currentTabIndex], obj, new WebSocketCallback() {
                     @Override
                     public void onMessage(String message, Object... args) {
-                ((UserChatListFragment)tabsAdapter.getItem(currentTabIndex)).setUsers((List<UserChatNotif>)(List<?>)UserChatNotif.fromJson((JSONArray)args[0]));
+                        UserChatListFragment frag = ((UserChatListFragment)tabsAdapter.getItem(currentTabIndex));
+                        frag.setUsers((List<UserChatNotif>)(List<?>)UserChatNotif.fromJson((JSONArray)args[0]));
+                        frag.setNeedle(needle);
                 }
             });
         } catch (JSONException e) {}
@@ -86,7 +87,7 @@ public class HomeActivity extends SearchToolbarActivity {
     }
 
     private void initTabs() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPager viewPager = findViewById(R.id.pager);
         tabsAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         chatFragment = new ChatFragment();
         invitationFragment = new InvitationFragment();
@@ -96,7 +97,7 @@ public class HomeActivity extends SearchToolbarActivity {
         viewPager.setAdapter(tabsAdapter);
 
         currentTabIndex = 0;
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -171,7 +172,7 @@ public class HomeActivity extends SearchToolbarActivity {
     }
 
     private void setNewChatListener() {
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.new_chat_button);
+        FloatingActionButton fab = findViewById(R.id.new_chat_button);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
