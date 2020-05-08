@@ -25,7 +25,8 @@ import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity implements DatePickerFragment.OnDatePicked {
 
-    AccountModifier accountModifier;
+    private AccountModifier accountModifier;
+    private boolean isRequesting = false;
 
     public void showBirthdatePicker(View view) {
         accountModifier.showBirthdatePicker(view);
@@ -48,6 +49,9 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerFra
         List<Quad<Integer, ValueGetter, ValueValidation, String>> fieldsId = new ArrayList();
         JSONObject obj;
 
+        if (isRequesting) {
+            return ;
+        }
         fieldsId.add(new Quad(R.id.name_input, new ValueGetter() {
             public Object get(View _view) {
                 return accountModifier.getFromString(_view);
@@ -212,6 +216,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerFra
         else {
             final Request req = Request.getInstance();
 
+            isRequesting = true;
             Callback cb = new Callback()
             {
                 @Override
@@ -220,6 +225,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerFra
                     String token;
                     JSONObject data = (JSONObject)objData;
 
+                    isRequesting = false;
                     try {
                         token = data.getString("token");
                     } catch (JSONException e) {
@@ -234,8 +240,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerFra
                 @Override
                 public void fail(String error)
                 {
-                    System.out.println("Dans le fail");
-                    System.out.println(error);
+                    isRequesting = false;
                 }
             };
 

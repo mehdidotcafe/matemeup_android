@@ -9,6 +9,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.koushikdutta.async.http.body.JSONObjectBody;
 import com.matemeup.matemeup.entities.Callback;
 import com.matemeup.matemeup.entities.ConnectedUser;
 import com.matemeup.matemeup.entities.IntentManager;
@@ -22,6 +23,8 @@ import com.matemeup.matemeup.entities.validation.AccountModifier;
 import com.matemeup.matemeup.entities.rendering.AvatarRemoteImageLoader;
 import com.matemeup.matemeup.entities.validation.ValueGetter;
 import com.matemeup.matemeup.entities.validation.ValueValidation;
+import com.matemeup.matemeup.entities.websocket.MMUWebSocket;
+import com.matemeup.matemeup.entities.websocket.WebSocketCallback;
 import com.matemeup.matemeup.fragments.DatePickerFragment;
 
 import org.json.JSONException;
@@ -33,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class ProfileActivity extends Layout implements DatePickerFragment.OnDatePicked {
@@ -215,6 +219,18 @@ public class ProfileActivity extends Layout implements DatePickerFragment.OnDate
         setSupportActionBar(toolbar);
     }
 
+    private List<String> getRewardsFromResponse(JSONObject rewards) {
+        List<String> messages = new ArrayList<String>();
+        for(Iterator<String> iter = rewards.keys(); iter.hasNext();) {
+            String key = iter.next();
+
+            try {
+                messages.add(rewards.getInt(key) + " " + key + ".");
+            } catch (JSONException e) {}
+        }
+        return messages;
+    }
+
     private void setListeners() {
         final ProfileActivity self = this;
         this.findViewById(R.id.disconnect_button).setOnClickListener(new View.OnClickListener() {
@@ -224,7 +240,45 @@ public class ProfileActivity extends Layout implements DatePickerFragment.OnDate
                 IntentManager.goTo(self, MainActivity.class);
             }
         });
+
+        this.findViewById(R.id.reward_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MMUWebSocket.getInstance(self).emit("reward.use", new JSONObject(), new WebSocketCallback() {
+                    @Override
+                    public void onMessage(String message, Object... args) {
+                        JSONObject res = (JSONObject)args[0];
+
+                        try {
+                            if (res.getBoolean("state")) {
+                                self.findViewById(R.id.reward_button).setVisibility(View.INVISIBLE);
+                                Alert.ok(self, "Récompense", self.getRewardsFromResponse(res.getJSONObject("rewards")), new AlertCallback());
+
+                            }
+                        } catch (JSONException e) {}
+                    }
+                });
+            }
+        });
     }
+
+    private void setRewardButtonVisibility() {
+        MMUWebSocket.getInstance(self).emit("reward.isAvailable", new JSONObject(), new WebSocketCallback() {
+            @Override
+            public void onMessage(String message, Object... args) {
+                JSONObject res = (JSONObject)args[0];
+                
+                try {
+                    if (res.getBoolean("state") && res.getBoolean("isAvailable")) {
+                        self.findViewById(R.id.reward_button).setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,6 +287,7 @@ public class ProfileActivity extends Layout implements DatePickerFragment.OnDate
         accountModifier = new AccountModifier(this);
         setListeners();
         initToolbar();
+        setRewardButtonVisibility();
         getUser();
     }
 }

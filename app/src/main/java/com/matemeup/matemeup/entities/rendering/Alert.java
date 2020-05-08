@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 
 import com.matemeup.matemeup.R;
 
+import java.util.List;
+
 public class Alert {
     public static void yesNo(Context context, String title, String message, final AlertCallback cb) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -24,6 +26,21 @@ public class Alert {
                     }
                 }).show();
     }
+    public static void ok(Context context, String title, List<String> message, final AlertCallback cb) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+
+        dialog.setTitle(title);
+
+        for (int i = 0; i < message.size(); i++) {
+            dialog.setMessage(message.get(i));
+        }
+        dialog.setNeutralButton(context.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialoginterface, int i) {
+                        dialoginterface.cancel();
+                        cb.success();
+                    }}).show();
+    }
+
 
     public static void ok(Context context, String title, String message, final AlertCallback cb) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);

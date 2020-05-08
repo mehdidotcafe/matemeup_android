@@ -50,8 +50,12 @@ public class HistoryChat implements Serializable<HistoryChat> {
             receiverUserAvatar = obj.getString("receiverUserAvatar");
             type = obj.getInt("type");
             message = obj.getString("message");
+            if (obj.has("isInvitation")) {
+                isInvitation = obj.getBoolean("isInvitation");
+            } else {
+                isInvitation = false;
+            }
             isUser = obj.getBoolean("isUser");
-            isInvitation = obj.getBoolean("isInvitation");
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

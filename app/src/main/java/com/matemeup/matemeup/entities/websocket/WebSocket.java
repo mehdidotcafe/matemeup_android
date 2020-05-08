@@ -39,10 +39,12 @@ public class WebSocket {
 
             public void checkClientTrusted(X509Certificate[] chain,
                                            String authType) throws CertificateException {
+                System.out.println("ERROR");
             }
 
             public void checkServerTrusted(X509Certificate[] chain,
                                            String authType) throws CertificateException {
+                System.out.println("ERROR");
             }
         } };
 
@@ -69,10 +71,12 @@ public class WebSocket {
 
                     public void checkClientTrusted(X509Certificate[] chain,
                                                    String authType) throws CertificateException {
+                        System.out.println("ERROR");
                     }
 
                     public void checkServerTrusted(X509Certificate[] chain,
                                                    String authType) throws CertificateException {
+                        System.out.println("ERROR");
                     }
                 })
                 .build();
@@ -83,6 +87,7 @@ public class WebSocket {
 
 // set as an option
         opts = new IO.Options();
+        opts.reconnection = true;
         opts.callFactory = okHttpClient;
         opts.webSocketFactory = okHttpClient;
 
@@ -99,24 +104,25 @@ public class WebSocket {
             return ;
         }
 
-        socket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        socket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        socket.on(Socket.EVENT_CONNECT_ERROR, onConnectErrorFx);
+        socket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectErrorFx);
+        socket.on(Socket.EVENT_RECONNECT_ERROR, onConnectErrorFx);
+        socket.on(Socket.EVENT_DISCONNECT, onConnectErrorFx);
         socket.connect();
         activity = _activity;
     }
 
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
+    private Emitter.Listener onConnectErrorFx = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
             currentRequest.clear();
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(activity.getApplicationContext(), "SOCKET ERROR " + args[0], Toast.LENGTH_LONG).show();
-                }
-            });
+            onConnectError();
         }
     };
+
+    protected void onConnectError() {
+
+    }
 
     public void off(String message, Emitter.Listener callback) {
         socket.off(message, callback);

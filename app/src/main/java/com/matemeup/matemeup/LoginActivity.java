@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private boolean isRequesting = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject loginObj = new JSONObject();
         final LoginActivity self = this;
 
+        if (isRequesting == true) {
+            return ;
+        }
         try {
             loginObj.put("email", username);
             loginObj.put("password", password);
@@ -54,15 +59,18 @@ public class LoginActivity extends AppCompatActivity {
 
         final Request req = Request.getInstance();
 
+        isRequesting = true;
         Callback cb = new Callback() {
             @Override
             public void success(Object objData) {
+                isRequesting = false;
                 Loginout.login(self, (JSONObject)objData);
                 goToHome();
             }
 
             @Override
             public void fail(String error) {
+                isRequesting = false;
                 System.out.println(error);
                 Alert.ok(self, getResources().getString(R.string.connect_error), getResources().getString(R.string.email_password_invalid), new AlertCallback());
             }

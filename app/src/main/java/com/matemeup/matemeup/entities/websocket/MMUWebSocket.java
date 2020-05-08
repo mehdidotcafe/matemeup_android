@@ -31,6 +31,11 @@ public class MMUWebSocket extends WebSocket{
         return instance;
     }
 
+    @Override
+    protected void onConnectError() {
+        MMUWebSocket.delInstance();
+    }
+
     public static void delInstance() {
         instance = null;
     }
@@ -38,7 +43,7 @@ public class MMUWebSocket extends WebSocket{
     private MMUWebSocket(Activity activity)
     {
        super(activity, URL);
-        cachedEmit = new ArrayList();
+       cachedEmit = new ArrayList();
        if (!isInit)
        {
            Request req = Request.getInstance();
@@ -60,7 +65,7 @@ public class MMUWebSocket extends WebSocket{
 
                    emit(EHLO, token, new WebSocketCallback() {
                        public void onMessage(String message, final Object... args) {
-                           if (!hasReceiveEhlo )
+                           if (!hasReceiveEhlo)
                            {
                                if ((Boolean)args[0]) {
                                    hasReceiveEhlo = true;

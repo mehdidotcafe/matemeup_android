@@ -94,7 +94,7 @@ public class ChatActivity extends Layout {
     }
 
     public void sendTextFromButton(View view) {
-        EditText input = (EditText)findViewById(R.id.chat_input);
+        EditText input = findViewById(R.id.chat_input);
 
         sendText(input.getText().toString());
         input.setText("");

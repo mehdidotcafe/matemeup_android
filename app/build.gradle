@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.matemeup.matemeup"
         minSdkVersion 21
@@ -19,6 +20,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        dexOptions {
+            matchingFallbacks = ['release', 'debug']
+        }
     }
 }
 
@@ -33,25 +37,27 @@ buildscript {
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 repositories {
+    jcenter()
+    mavenCentral()
     maven { url 'https://maven.google.com' }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:24.2.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:appcompat-v7:27.2.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.volley:volley:1.1.0'
     // https://mvnrepository.com/artifact/com.koushikdutta.ion/ion
     implementation group: 'com.koushikdutta.ion', name: 'ion', version: '2.1.6'
-    implementation 'com.google.android.gms:play-services-places:11.8.0'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation ('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
-    implementation 'com.android.support:design:24.2.1'
-    implementation 'com.android.support:recyclerview-v7:23.1.0'
-    implementation 'com.onesignal:OneSignal:[3.8.3, 3.99.99]'
+    implementation 'com.android.support:design:27.2.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.onesignal:OneSignal:3.10.1'
 }
